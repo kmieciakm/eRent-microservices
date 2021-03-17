@@ -1,27 +1,24 @@
 ﻿using Database.Entities;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Database.DatabaseContext
 {
-    class DatabaseContextSeed
+    class RentDbContextSeed
     {
         private RentDbContext _DbContext { get; set; }
-        public DatabaseContextSeed(RentDbContext dbContext)
+        public RentDbContextSeed(RentDbContext dbContext)
         {
             _DbContext = dbContext;
         }
 
         public void SeedData()
         {
-            ClearDatabase();
             SeedClients();
             SeedRents();
-            _DbContext.SaveChanges();
+            _DbContext.SaveChangesAsync();
         }
 
         private void SeedClients()
@@ -46,24 +43,10 @@ namespace Database.DatabaseContext
                     RentalDate = DateTime.Now,
                     EndRentalDate = DateTime.Now.AddDays(7),
                     TotalRentPrice = 200m,
-                    RentedVehicleVin = "12345678901234",
+                    RentedVehicleVin = "12345678901234567",
                     ClientGuid = _DbContext.Clients.FirstOrDefault().ClientGuid
                 }
             );
-        }
-
-        private void ClearDatabase()
-        {
-            List<Task> clearSetTasks = new List<Task>() {
-                ClearSet(_DbContext.Clients),
-                ClearSet(_DbContext.Rents),
-            };
-            Task.WhenAll(clearSetTasks);
-        }
-
-        private async Task ClearSet<T>(DbSet<T> dbSet) where T : class
-        {
-            await dbSet.ForEachAsync(entity => dbSet.Remove(entity));
         }
     }
 }

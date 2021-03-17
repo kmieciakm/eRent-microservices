@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Domain.DomainModels
 {
+    /// <summary>
+    /// Information about the rental client.
+    /// </summary>
     public class Client
     {
         public Client(Guid clientGuid, string firstname, string lastname, string email)

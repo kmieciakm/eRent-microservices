@@ -17,7 +17,7 @@ namespace Database.DatabaseContext
             var database = new RentDbContext(options);
             database.Database.EnsureCreated();
 
-            var rentDbSeed = new DatabaseContextSeed(database);
+            var rentDbSeed = new RentDbContextSeed(database);
             rentDbSeed.SeedData();
 
             return database;

@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Domain.Ports.Directive
 {
+    /// <summary>
+    /// Specifies data access point for Client entity.
+    /// </summary>
     public interface IClient
     {
         Client Get(Guid clientGuid);

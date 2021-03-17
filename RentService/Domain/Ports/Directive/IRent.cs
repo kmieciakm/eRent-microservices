@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Domain.Ports.Directive
 {
+    /// <summary>
+    /// Specifies data access point for Rent entity.
+    /// </summary>
     public interface IRent
     {
         Rent Get(Guid rentGuid);

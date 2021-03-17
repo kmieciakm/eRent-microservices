@@ -5,7 +5,7 @@ using System.Text;
 namespace Domain.DomainModels.ValueObjects
 {
     /// <summary>
-    /// Represents Car identifier
+    /// Represents Car identifier.
     /// </summary>
     public class Vin
     {
