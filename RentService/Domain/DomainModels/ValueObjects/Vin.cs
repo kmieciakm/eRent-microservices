@@ -29,5 +29,16 @@ namespace Domain.DomainModels.ValueObjects
 
             return new Vin() { Value = vin };
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Vin vin &&
+                   Value == vin.Value;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Value);
+        }
     }
 }

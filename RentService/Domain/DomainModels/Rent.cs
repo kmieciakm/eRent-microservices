@@ -10,12 +10,14 @@ namespace Domain.DomainModels
     /// </summary>
     public class Rent
     {
-        public Rent(Guid rentGuid, Client client, DateTime rentalDateTime, Vin vinOfRentedCar)
+        public Rent(Guid rentGuid, Client client, DateTime rentalDate, DateTime endRentalDate, Vin rentedVehicleVin, decimal totalRentPrice)
         {
             RentGuid = rentGuid;
             Client = client;
-            RentalDate = rentalDateTime;
-            RentedVehicleVin = vinOfRentedCar;
+            RentalDate = rentalDate;
+            EndRentalDate = endRentalDate;
+            RentedVehicleVin = rentedVehicleVin;
+            TotalRentPrice = totalRentPrice;
         }
 
         public Guid RentGuid { get; }
@@ -43,12 +45,16 @@ namespace Domain.DomainModels
             return obj is Rent rent &&
                    RentGuid.Equals(rent.RentGuid) &&
                    Client.Equals(rent.Client) &&
-                   RentalDate == rent.RentalDate;
+                   RentalDate == rent.RentalDate &&
+                   EndRentalDate == rent.EndRentalDate &&
+                   RentDuration.Equals(rent.RentDuration) &&
+                   RentedVehicleVin.Equals(rent.RentedVehicleVin) &&
+                   TotalRentPrice == rent.TotalRentPrice;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(RentGuid, Client, RentalDate);
+            return HashCode.Combine(RentGuid, Client, RentalDate, EndRentalDate, RentDuration, RentedVehicleVin, TotalRentPrice);
         }
     }
 }
