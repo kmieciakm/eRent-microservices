@@ -13,7 +13,7 @@ namespace Database.DatabaseContext
         {
         }
 
-        public DbSet<ClientEnt> Clients { get; set; }
-        public DbSet<RentEnt> Rents { get; set; }
+        public DbSet<DbClientEntity> Clients { get; set; }
+        public DbSet<DbRentEntity> Rents { get; set; }
     }
 }

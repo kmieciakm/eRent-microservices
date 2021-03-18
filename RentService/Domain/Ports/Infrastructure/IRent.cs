@@ -3,17 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Ports.Directive
+namespace Domain.Ports.Infrastructure
 {
     /// <summary>
     /// Specifies data access point for Rent entity.
     /// </summary>
     public interface IRent
     {
-        Rent Get(Guid rentGuid);
-        List<Rent> GetByClient(Guid clientGuid);
-        bool Create(Rent rent);
-        bool Update(Rent rent);
+        RentEntity Get(Guid rentGuid);
+        List<RentEntity> GetByClient(Guid clientGuid);
+        bool Create(RentEntity rent);
+        bool Update(RentEntity rent);
         bool Delete(Guid rentGuid);
     }
 }

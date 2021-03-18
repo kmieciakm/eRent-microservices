@@ -6,13 +6,13 @@ using System.Text;
 
 namespace Database.Entities
 {
-    class RentEnt
+    class DbRentEntity
     {
         [Key]
         public Guid RentGuid { get; set; }
         public Guid ClientGuid { get; set; }
         [ForeignKey("ClientGuid")]
-        public ClientEnt Client { get; set; }
+        public DbClientEntity Client { get; set; }
         public DateTime RentalDate { get; set; }
         public DateTime EndRentalDate { get; set; }
         public string RentedVehicleVin { get; set; }

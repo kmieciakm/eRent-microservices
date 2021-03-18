@@ -1,6 +1,6 @@
 ﻿using Domain.DomainModels;
-using Domain.Ports.Directive;
 using Domain.Ports.Infrastructure;
+using Domain.Ports.Presenters;
 using Domain.Services;
 using Moq;
 using System;
@@ -13,8 +13,8 @@ namespace Domain.UnitTests.TestCases
 {
     public class CarRentServiceTests
     {
-        private Client Client { get; set; }
-        private List<Rent> ClientRents { get; set; }
+        private ClientEntity Client { get; set; }
+        private List<RentEntity> ClientRents { get; set; }
         private IClient ClientRepo { get; set; }
         private IRent RentRepo { get; set; }
 
@@ -48,7 +48,7 @@ namespace Domain.UnitTests.TestCases
         [Fact]
         public void GetClientRents_ClientHasRents()
         {
-            List<Rent> rentExpected = new List<Rent>(ClientRents);
+            List<RentEntity> rentExpected = new List<RentEntity>(ClientRents);
             ICarRentService carRentService = ServicesFactory.CreateCarRentService(ClientRepo, RentRepo);
 
             Assert.Equal(rentExpected, carRentService.GetClientRents(Client.ClientGuid));

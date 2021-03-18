@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Ports.Infrastructure
+namespace Domain.Ports.Presenters
 {
     /// <summary>
     /// Car rental management service.
     /// </summary>
     public interface ICarRentService
     {
-        IList<Rent> GetClientRents(Guid clientGuid);
+        IList<RentEntity> GetClientRents(Guid clientGuid);
     }
 }

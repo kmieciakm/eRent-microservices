@@ -1,6 +1,6 @@
 ﻿using Domain.DomainModels;
-using Domain.Ports.Directive;
 using Domain.Ports.Infrastructure;
+using Domain.Ports.Presenters;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +17,7 @@ namespace Domain.Services
             Rent = rent;
         }
 
-        public IList<Rent> GetClientRents(Guid clientGuid)
+        public IList<RentEntity> GetClientRents(Guid clientGuid)
         {
             return Rent.GetByClient(clientGuid);
         }

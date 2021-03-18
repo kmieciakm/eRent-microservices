@@ -11,16 +11,16 @@ namespace Domain.UnitTests.TestData
     /// </summary>
     static class TestDataFactory
     {
-        public static (Client client, List<Rent> rents) GetClientWithItsRents()
+        public static (ClientEntity client, List<RentEntity> rents) GetClientWithItsRents()
         {
-            var client = new Client(
+            var client = new ClientEntity(
                 Guid.NewGuid(),
                 "Test_Firstname",
                 "Test_Lastname",
                 "Test_Email"
             );
-            var rents = new List<Rent>() {
-                new Rent(
+            var rents = new List<RentEntity>() {
+                new RentEntity(
                     Guid.NewGuid(),
                     client,
                     DateTime.Now,
@@ -28,7 +28,7 @@ namespace Domain.UnitTests.TestData
                     Vin.FromString("12345678901234567"),
                     800m
                 ),
-                new Rent(
+                new RentEntity(
                     Guid.NewGuid(),
                     client,
                     DateTime.Now,

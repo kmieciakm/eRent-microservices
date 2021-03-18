@@ -9,8 +9,8 @@ namespace Domain.DomainModels.ValueObjects
     /// </summary>
     public class Vin
     {
-        public static int RequireVinLength { get; } = 17;
-        public static string VinNormNumber { get; } = "ISO-3779";
+        private static int RequireVinLength { get; } = 17;
+        private static string VinNormNumber { get; } = "ISO-3779";
         public string Value { get; private set; }
 
         private Vin() { }

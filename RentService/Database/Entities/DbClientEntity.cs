@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Database.Entities
 {
-    class ClientEnt
+    class DbClientEntity
     {
         [Key]
         public Guid ClientGuid { get; set; }

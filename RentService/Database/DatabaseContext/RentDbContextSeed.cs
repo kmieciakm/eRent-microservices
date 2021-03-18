@@ -24,7 +24,7 @@ namespace Database.DatabaseContext
         private void SeedClients()
         {
             _DbContext.Clients.Add(
-                new ClientEnt()
+                new DbClientEntity()
                 {
                     ClientGuid = Guid.NewGuid(),
                     Firstname = "Jan",
@@ -37,7 +37,7 @@ namespace Database.DatabaseContext
         private void SeedRents()
         {
             _DbContext.Rents.Add(
-                new RentEnt()
+                new DbRentEntity()
                 {
                     RentGuid = Guid.NewGuid(),
                     RentalDate = DateTime.Now,

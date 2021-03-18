@@ -1,6 +1,6 @@
 ﻿using Database.Repositories;
 using Domain.DomainModels;
-using Domain.Ports.Directive;
+using Domain.Ports.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +15,7 @@ namespace Database.Adapters
             RentRepository = rentRepository;
         }
 
-        public bool Create(Rent rent)
+        public bool Create(RentEntity rent)
         {
             throw new NotImplementedException();
         }
@@ -25,17 +25,17 @@ namespace Database.Adapters
             throw new NotImplementedException();
         }
 
-        public Rent Get(Guid rentGuid)
+        public RentEntity Get(Guid rentGuid)
         {
             throw new NotImplementedException();
         }
 
-        public List<Rent> GetByClient(Guid clientGuid)
+        public List<RentEntity> GetByClient(Guid clientGuid)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(Rent rent)
+        public bool Update(RentEntity rent)
         {
             throw new NotImplementedException();
         }

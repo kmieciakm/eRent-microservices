@@ -1,6 +1,6 @@
 ﻿using Database.Repositories;
 using Domain.DomainModels;
-using Domain.Ports.Directive;
+using Domain.Ports.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +15,7 @@ namespace Database.Adapters
             _ClientRepository = clientRepository;
         }
 
-        public bool Create(Client client)
+        public bool Create(ClientEntity client)
         {
             throw new NotImplementedException();
         }
@@ -25,12 +25,12 @@ namespace Database.Adapters
             throw new NotImplementedException();
         }
 
-        public Client Get(Guid clientGuid)
+        public ClientEntity Get(Guid clientGuid)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(Client client)
+        public bool Update(ClientEntity client)
         {
             throw new NotImplementedException();
         }

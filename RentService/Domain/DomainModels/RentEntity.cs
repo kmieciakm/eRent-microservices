@@ -8,9 +8,9 @@ namespace Domain.DomainModels
     /// <summary>
     /// Represent a car rental.
     /// </summary>
-    public class Rent
+    public class RentEntity
     {
-        public Rent(Guid rentGuid, Client client, DateTime rentalDate, DateTime endRentalDate, Vin rentedVehicleVin, decimal totalRentPrice)
+        public RentEntity(Guid rentGuid, ClientEntity client, DateTime rentalDate, DateTime endRentalDate, Vin rentedVehicleVin, decimal totalRentPrice)
         {
             RentGuid = rentGuid;
             Client = client;
@@ -21,7 +21,7 @@ namespace Domain.DomainModels
         }
 
         public Guid RentGuid { get; }
-        public Client Client { get; private set; }
+        public ClientEntity Client { get; private set; }
         /// <summary>
         /// Specifies begining of a car rent.
         /// </summary>
@@ -42,7 +42,7 @@ namespace Domain.DomainModels
 
         public override bool Equals(object obj)
         {
-            return obj is Rent rent &&
+            return obj is RentEntity rent &&
                    RentGuid.Equals(rent.RentGuid) &&
                    Client.Equals(rent.Client) &&
                    RentalDate == rent.RentalDate &&

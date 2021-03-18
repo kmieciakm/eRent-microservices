@@ -7,9 +7,9 @@ namespace Domain.DomainModels
     /// <summary>
     /// Information about the rental client.
     /// </summary>
-    public class Client
+    public class ClientEntity
     {
-        public Client(Guid clientGuid, string firstname, string lastname, string email)
+        public ClientEntity(Guid clientGuid, string firstname, string lastname, string email)
         {
             ClientGuid = clientGuid;
             Firstname = firstname;
@@ -24,7 +24,7 @@ namespace Domain.DomainModels
 
         public override bool Equals(object obj)
         {
-            return obj is Client client &&
+            return obj is ClientEntity client &&
                    ClientGuid.Equals(client.ClientGuid) &&
                    Firstname == client.Firstname &&
                    Lastname == client.Lastname &&
