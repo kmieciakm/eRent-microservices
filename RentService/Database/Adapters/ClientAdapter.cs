@@ -1,4 +1,5 @@
-﻿using Database.Repositories;
+﻿using Database.Helpers;
+using Database.Repositories.Contracts;
 using Domain.DomainModels;
 using Domain.Ports.Infrastructure;
 using System;
@@ -9,15 +10,16 @@ namespace Database.Adapters
 {
     class ClientAdapter : IClient
     {
-        private ClientRepository _ClientRepository { get; set; }
-        public ClientAdapter(ClientRepository clientRepository)
+        private IClientRepository _ClientRepository { get; set; }
+        public ClientAdapter(IClientRepository clientRepository)
         {
             _ClientRepository = clientRepository;
         }
 
         public bool Create(ClientEntity client)
         {
-            throw new NotImplementedException();
+            var dbClient = EntitiesMapper.MapToDbClientEntity(client);
+            return _ClientRepository.CreateAndSave(dbClient);
         }
 
         public bool Delete(Guid clientGuid)

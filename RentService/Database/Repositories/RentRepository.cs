@@ -1,12 +1,12 @@
 ﻿using Database.DatabaseContext;
-using Microsoft.EntityFrameworkCore;
+using Database.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Database.Repositories
 {
-    class RentRepository
+    class RentRepository : IRentRepository
     {
         private RentDbContext _DbContext { get; set; }
         public RentRepository(RentDbContext dbContext)

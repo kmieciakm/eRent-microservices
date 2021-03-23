@@ -1,4 +1,4 @@
-﻿using Database.Repositories;
+﻿using Database.Repositories.Contracts;
 using Domain.DomainModels;
 using Domain.Ports.Infrastructure;
 using System;
@@ -9,10 +9,10 @@ namespace Database.Adapters
 {
     class RentAdapter : IRent
     {
-        private RentRepository RentRepository { get; set; }
-        public RentAdapter(RentRepository rentRepository)
+        private IRentRepository _RentRepository { get; set; }
+        public RentAdapter(IRentRepository rentRepository)
         {
-            RentRepository = rentRepository;
+            _RentRepository = rentRepository;
         }
 
         public bool Create(RentEntity rent)

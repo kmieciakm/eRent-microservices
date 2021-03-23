@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Database.DatabaseContext
 {
+    // TODO: Consider moving this class to tests project
     class RentDbContextSeed
     {
         private RentDbContext _DbContext { get; set; }
@@ -18,7 +19,6 @@ namespace Database.DatabaseContext
         {
             SeedClients();
             SeedRents();
-            _DbContext.SaveChangesAsync();
         }
 
         private void SeedClients()
@@ -32,6 +32,7 @@ namespace Database.DatabaseContext
                     Email = "jan.kow@wp.pl"
                 }
             );
+            _DbContext.SaveChangesAsync();
         }
 
         private void SeedRents()
@@ -47,6 +48,7 @@ namespace Database.DatabaseContext
                     ClientGuid = _DbContext.Clients.FirstOrDefault().ClientGuid
                 }
             );
+            _DbContext.SaveChangesAsync();
         }
     }
 }
