@@ -10,7 +10,8 @@ namespace Database.DatabaseContext
         private DbConnection _connection;
 
         private DbContextOptions<RentDbContext> CreateOptions => new DbContextOptionsBuilder<RentDbContext>()
-                .UseSqlite(_connection).Options;
+            .EnableSensitiveDataLogging()
+            .UseSqlite(_connection).Options;
 
         public RentDbContext CreateDbContext()
         {

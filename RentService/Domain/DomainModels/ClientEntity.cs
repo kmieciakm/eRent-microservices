@@ -18,9 +18,9 @@ namespace Domain.DomainModels
         }
 
         public Guid ClientGuid { get; }
-        public string Firstname { get; private set; }
-        public string Lastname { get; private set; }
-        public string Email { get; private set; }
+        public string Firstname { get; set; }
+        public string Lastname { get; set; }
+        public string Email { get; set; }
 
         public override bool Equals(object obj)
         {

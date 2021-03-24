@@ -18,5 +18,17 @@ namespace Database.Helpers
                 Email = clientEntity.Email
             };
         }
+
+        public static ClientEntity MapToClientEntity(DbClientEntity dbClientEntity)
+        {
+            if (dbClientEntity == null) return null;
+            return new ClientEntity
+            (
+                dbClientEntity.ClientGuid,
+                dbClientEntity.Firstname,
+                dbClientEntity.Lastname,
+                dbClientEntity.Email
+            );
+        }
     }
 }

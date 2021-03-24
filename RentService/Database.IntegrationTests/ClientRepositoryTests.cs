@@ -65,5 +65,46 @@ namespace Database.IntegrationTests
                 _Client.Create(client)
             );
         }
+
+        [Fact]
+        public void DeleteClient_ClientDataCorrect()
+        {
+            var clientGuid = Guid.NewGuid();
+            var client = new ClientEntity(
+               clientGuid,
+               "Test Firstname",
+               "Test Lastname",
+               "correctEmail@address.com"
+           );
+            _Client.Create(client);
+            _Client.Delete(clientGuid);
+
+            Assert.Null(_Client.Get(clientGuid));
+        }
+
+        [Fact]
+        public void DeleteClient_ClientDataIncorrect()
+        {
+            var clientGuid = Guid.NewGuid();
+            var deletedCorrectly = _Client.Delete(clientGuid);
+
+            Assert.False(deletedCorrectly);
+        }
+
+        [Fact]
+        public void GetClient_ClientDataCorrect()
+        {
+            var clientGuid = Guid.NewGuid();
+            var client = new ClientEntity(
+               clientGuid,
+               "Test Firstname",
+               "Test Lastname",
+               "correctEmail@address.com"
+           );
+            _Client.Create(client);
+            _Client.Get(clientGuid);
+
+            Assert.Equal(client, _Client.Get(clientGuid));
+        }
     }
 }

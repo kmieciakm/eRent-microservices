@@ -24,17 +24,19 @@ namespace Database.Adapters
 
         public bool Delete(Guid clientGuid)
         {
-            throw new NotImplementedException();
+            return _ClientRepository.DeleteAndSave(clientGuid);
         }
 
         public ClientEntity Get(Guid clientGuid)
         {
-            throw new NotImplementedException();
+            var dbClient = _ClientRepository.GetClient(clientGuid);
+            return EntitiesMapper.MapToClientEntity(dbClient);
         }
 
         public bool Update(ClientEntity client)
         {
-            throw new NotImplementedException();
+            var dbClient = EntitiesMapper.MapToDbClientEntity(client);
+            return _ClientRepository.UpdateAndSave(dbClient);
         }
     }
 }
