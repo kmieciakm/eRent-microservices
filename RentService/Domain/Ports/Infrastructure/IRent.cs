@@ -11,7 +11,7 @@ namespace Domain.Ports.Infrastructure
     public interface IRent
     {
         RentEntity Get(Guid rentGuid);
-        List<RentEntity> GetByClient(Guid clientGuid);
+        List<RentEntity> GetRentsOfClient(Guid clientGuid);
         bool Create(RentEntity rent);
         bool Update(RentEntity rent);
         bool Delete(Guid rentGuid);

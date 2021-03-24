@@ -32,7 +32,7 @@ namespace Domain.UnitTests.TestCases
                 .Setup(client => client.Get(Client.ClientGuid))
                 .Returns(Client);
             rentMock
-                .Setup(rent => rent.GetByClient(Client.ClientGuid))
+                .Setup(rent => rent.GetRentsOfClient(Client.ClientGuid))
                 .Returns(ClientRents);
 
             ClientRepo = mockClient.Object;
