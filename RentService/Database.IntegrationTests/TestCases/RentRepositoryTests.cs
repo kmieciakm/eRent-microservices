@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace Database.IntegrationTests
+namespace Database.IntegrationTests.TestCases
 {
     public class RentRepositoryTests
     {

@@ -34,6 +34,7 @@ namespace Database.Helpers
                 dbClientEntity.Email
             );
         }
+
         public static DbRentEntity MapToDbRentEntity(RentEntity rentEntity)
         {
             try
