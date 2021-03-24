@@ -1,8 +1,10 @@
-﻿using Database.Repositories.Contracts;
+﻿using Database.Helpers;
+using Database.Repositories.Contracts;
 using Domain.DomainModels;
 using Domain.Ports.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Database.Adapters
@@ -17,27 +19,33 @@ namespace Database.Adapters
 
         public bool Create(RentEntity rent)
         {
-            throw new NotImplementedException();
+            var dbRent = EntitiesMapper.MapToDbRentEntity(rent);
+            return _RentRepository.CreateAndSave(dbRent);
         }
 
         public bool Delete(Guid rentGuid)
         {
-            throw new NotImplementedException();
+            return _RentRepository.DeleteAndSave(rentGuid);
         }
 
         public RentEntity Get(Guid rentGuid)
         {
-            throw new NotImplementedException();
+            var dbRent = _RentRepository.Get(rentGuid);
+            return EntitiesMapper.MapToRentEntity(dbRent);
         }
 
-        public List<RentEntity> GetByClient(Guid clientGuid)
+        public List<RentEntity> GetRentsOfClient(Guid clientGuid)
         {
-            throw new NotImplementedException();
+            var dbRents = _RentRepository.GetByClient(clientGuid);
+            return EntitiesMapper
+                .MapToRentEntity(dbRents)
+                .ToList();
         }
 
         public bool Update(RentEntity rent)
         {
-            throw new NotImplementedException();
+            var dbRent = EntitiesMapper.MapToDbRentEntity(rent);
+            return _RentRepository.UpdateAndSave(dbRent);
         }
     }
 }

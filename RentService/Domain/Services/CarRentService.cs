@@ -19,7 +19,7 @@ namespace Domain.Services
 
         public IList<RentEntity> GetClientRents(Guid clientGuid)
         {
-            return Rent.GetByClient(clientGuid);
+            return Rent.GetRentsOfClient(clientGuid);
         }
     }
 }
