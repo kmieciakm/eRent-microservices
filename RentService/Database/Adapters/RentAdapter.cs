@@ -1,4 +1,4 @@
-﻿using Database.Helpers;
+﻿using Database.Helpers.Mappers;
 using Database.Repositories.Contracts;
 using Domain.DomainModels;
 using Domain.Ports.Infrastructure;
@@ -19,7 +19,7 @@ namespace Database.Adapters
 
         public bool Create(RentEntity rent)
         {
-            var dbRent = EntitiesMapper.MapToDbRentEntity(rent);
+            var dbRent = Mapper.Rent.MapToDbRentEntity(rent);
             return _RentRepository.CreateAndSave(dbRent);
         }
 
@@ -31,20 +31,20 @@ namespace Database.Adapters
         public RentEntity Get(Guid rentGuid)
         {
             var dbRent = _RentRepository.Get(rentGuid);
-            return EntitiesMapper.MapToRentEntity(dbRent);
+            return Mapper.Rent.MapToRentEntity(dbRent);
         }
 
         public List<RentEntity> GetRentsOfClient(Guid clientGuid)
         {
             var dbRents = _RentRepository.GetByClient(clientGuid);
-            return EntitiesMapper
+            return Mapper.Rent
                 .MapToRentEntity(dbRents)
                 .ToList();
         }
 
         public bool Update(RentEntity rent)
         {
-            var dbRent = EntitiesMapper.MapToDbRentEntity(rent);
+            var dbRent = Mapper.Rent.MapToDbRentEntity(rent);
             return _RentRepository.UpdateAndSave(dbRent);
         }
     }
