@@ -1,4 +1,5 @@
 ﻿using Database.Adapters;
+using Database.DatabaseContext;
 using Database.IntegrationTests.TestFixture;
 using Database.Repositories;
 using Database.Repositories.Contracts;
@@ -16,7 +17,7 @@ namespace Database.IntegrationTests
         public void ConfigureServices(IServiceCollection services)
         {
             // Database context
-            services.AddScoped(provider => new InMemoryRentDatabase().CreateDbContext());
+            services.AddScoped(_ => CreateDbContext());
 
             // Repositories
             services.AddScoped<IClientRepository, ClientRepository>();
@@ -31,6 +32,14 @@ namespace Database.IntegrationTests
             services.AddScoped<IRentCreate, RentAdapter>();
             services.AddScoped<IRentModify, RentAdapter>();
             services.AddScoped<IRentCancel, RentAdapter>();
+        }
+
+        private static RentDbContext CreateDbContext()
+        {
+            var dbContext = new InMemoryRentDatabase().CreateDbContext();
+            var dbContextSeed = new RentDbContextSeed(dbContext);
+            dbContextSeed.SeedData();
+            return dbContext;
         }
     }
 }
