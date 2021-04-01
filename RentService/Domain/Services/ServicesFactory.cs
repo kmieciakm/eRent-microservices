@@ -1,4 +1,5 @@
-﻿using Domain.Ports.Infrastructure;
+﻿using Domain.Ports.Infrastructure.Client;
+using Domain.Ports.Infrastructure.Rent;
 using Domain.Ports.Presenters;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,6 @@ namespace Domain.Services
     public static class ServicesFactory
     {
         public static ICarRentService CreateCarRentService
-            (IClient client, IRent rent) => new CarRentService(client, rent);
+            (IRentQuery rent) => new CarRentService(rent);
     }
 }

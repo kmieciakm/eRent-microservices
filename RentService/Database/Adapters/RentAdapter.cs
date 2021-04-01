@@ -1,7 +1,7 @@
 ﻿using Database.Helpers.Mappers;
 using Database.Repositories.Contracts;
 using Domain.DomainModels;
-using Domain.Ports.Infrastructure;
+using Domain.Ports.Infrastructure.Rent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Database.Adapters
 {
-    class RentAdapter : IRent
+    class RentAdapter : IRentQuery, IRentCreate, IRentCancel, IRentModify
     {
         private IRentRepository _RentRepository { get; set; }
         public RentAdapter(IRentRepository rentRepository)
@@ -17,24 +17,24 @@ namespace Database.Adapters
             _RentRepository = rentRepository;
         }
 
-        public bool Create(RentEntity rent)
+        bool IRentCreate.Create(RentEntity rent)
         {
             var dbRent = Mapper.Rent.MapToDbRentEntity(rent);
             return _RentRepository.CreateAndSave(dbRent);
         }
 
-        public bool Delete(Guid rentGuid)
+        bool IRentCancel.Delete(Guid rentGuid)
         {
             return _RentRepository.DeleteAndSave(rentGuid);
         }
 
-        public RentEntity Get(Guid rentGuid)
+        RentEntity IRentQuery.Get(Guid rentGuid)
         {
             var dbRent = _RentRepository.Get(rentGuid);
             return Mapper.Rent.MapToRentEntity(dbRent);
         }
 
-        public List<RentEntity> GetRentsOfClient(Guid clientGuid)
+        List<RentEntity> IRentQuery.GetRentsOfClient(Guid clientGuid)
         {
             var dbRents = _RentRepository.GetByClient(clientGuid);
             return Mapper.Rent
@@ -42,7 +42,7 @@ namespace Database.Adapters
                 .ToList();
         }
 
-        public bool Update(RentEntity rent)
+        bool IRentModify.Update(RentEntity rent)
         {
             var dbRent = Mapper.Rent.MapToDbRentEntity(rent);
             return _RentRepository.UpdateAndSave(dbRent);

@@ -3,17 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Ports.Infrastructure
+namespace Domain.Ports.Infrastructure.Rent
 {
     /// <summary>
-    /// Specifies data access point for Rent entity.
+    /// Specifies access point for Rent entity.
     /// </summary>
-    public interface IRent
+    public interface IRentQuery
     {
         RentEntity Get(Guid rentGuid);
         List<RentEntity> GetRentsOfClient(Guid clientGuid);
-        bool Create(RentEntity rent);
-        bool Update(RentEntity rent);
-        bool Delete(Guid rentGuid);
     }
 }

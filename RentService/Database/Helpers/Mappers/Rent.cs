@@ -11,7 +11,7 @@ namespace Database.Helpers.Mappers
 {
     static partial class Mapper
     {
-        public static partial class Rent
+        public static class Rent
         {
             public static DbRentEntity MapToDbRentEntity(RentEntity rentEntity)
             {

@@ -1,12 +1,12 @@
-﻿using Database.Entities;
+﻿using Database.DatabaseContext;
+using Database.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Database.DatabaseContext
+namespace Database.IntegrationTests.TestFixture
 {
-    // TODO: Consider moving this class to tests project
     class RentDbContextSeed
     {
         private RentDbContext _DbContext { get; set; }

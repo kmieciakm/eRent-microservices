@@ -1,8 +1,5 @@
-using Database.Adapters;
-using Database.DatabaseContext;
 using Database.IntegrationTests.TestData;
-using Database.Repositories;
-using Domain.Ports.Infrastructure;
+using Domain.Ports.Infrastructure.Client;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Xunit;
@@ -11,24 +8,18 @@ namespace Database.IntegrationTests.TestCases
 {
     public class ClientRepositoryTests
     {
-        private IClient _Client { get; set; }
+        private IClientQuery _Client { get; set; }
+        private IClientCreate _ClientCreate { get; set; }
+        private IClientDelete _ClientDelete { get; set; }
 
         /// <remarks>
         /// Constructor is called before each test.
-        /// Tests run slower, but data separation for each test is ensured.
         /// </remarks>
-        public ClientRepositoryTests()
+        public ClientRepositoryTests(IClientQuery clientQuery, IClientCreate clientCreate, IClientDelete clientDelete)
         {
-            var dbContext = DbContextFactory
-                .CreateInMemoryRentDatabase()
-                .CreateDbContext();
-
-            var dbContextSeed = new RentDbContextSeed(dbContext);
-            dbContextSeed.SeedData();
-
-            _Client = new ClientAdapter(
-                new ClientRepository(dbContext)
-            );
+            _Client = clientQuery;
+            _ClientCreate = clientCreate;
+            _ClientDelete = clientDelete;
         }
 
         [Fact]
@@ -41,9 +32,10 @@ namespace Database.IntegrationTests.TestCases
         public void CreateClient_ClientDataCorrect()
         {
             var client = ClientFactory.GetSampleClientEntity();
-            var createdCorrectly = _Client.Create(client);
+            var createdCorrectly = _ClientCreate.Create(client);
 
             Assert.True(createdCorrectly);
+            Assert.Equal(client, _Client.Get(client.ClientGuid));
         }
 
         [Fact]
@@ -52,25 +44,28 @@ namespace Database.IntegrationTests.TestCases
             var client = ClientFactory.GetIncorrectClientEntity();
 
             Assert.Throws<DbUpdateException>(() =>
-                _Client.Create(client)
+                _ClientCreate.Create(client)
             );
         }
 
-        [Fact]
+       [Fact]
         public void DeleteClient_ClientDataCorrect()
         {
             var client = ClientFactory.GetSampleClientEntity();
-            _Client.Create(client);
-            _Client.Delete(client.ClientGuid);
+            _ClientCreate.Create(client);
 
+            var deletedCorrectly = _ClientDelete.Delete(client.ClientGuid);
+
+            Assert.True(deletedCorrectly);
             Assert.Null(_Client.Get(client.ClientGuid));
         }
 
         [Fact]
-        public void DeleteClient_ClientDataIncorrect()
+        public void DeleteClient_ClientDoesNotExist()
         {
             var clientGuid = Guid.NewGuid();
-            var deletedCorrectly = _Client.Delete(clientGuid);
+
+            var deletedCorrectly = _ClientDelete.Delete(clientGuid);
 
             Assert.False(deletedCorrectly);
         }
@@ -79,9 +74,10 @@ namespace Database.IntegrationTests.TestCases
         public void GetClient_ClientDataCorrect()
         {
             var client = ClientFactory.GetSampleClientEntity();
-            _Client.Create(client);
-            _Client.Get(client.ClientGuid);
 
+            var createdCorrectly = _ClientCreate.Create(client);
+
+            Assert.True(createdCorrectly);
             Assert.Equal(client, _Client.Get(client.ClientGuid));
         }
     }

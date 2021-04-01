@@ -1,5 +1,6 @@
 ﻿using Domain.DomainModels;
-using Domain.Ports.Infrastructure;
+using Domain.Ports.Infrastructure.Client;
+using Domain.Ports.Infrastructure.Rent;
 using Domain.Ports.Presenters;
 using Domain.Services;
 using Moq;
@@ -15,8 +16,7 @@ namespace Domain.UnitTests.TestCases
     {
         private ClientEntity Client { get; set; }
         private List<RentEntity> ClientRents { get; set; }
-        private IClient ClientRepo { get; set; }
-        private IRent RentRepo { get; set; }
+        private IRentQuery RentRepo { get; set; }
 
         /// <remarks>
         /// Constructor is called before each test.
@@ -25,17 +25,11 @@ namespace Domain.UnitTests.TestCases
         {
             (Client, ClientRents) = TestData.TestDataFactory.GetClientWithItsRents();
 
-            Mock<IClient> mockClient = new Mock<IClient>();
-            Mock<IRent> rentMock = new Mock<IRent>();
-
-            mockClient
-                .Setup(client => client.Get(Client.ClientGuid))
-                .Returns(Client);
+            Mock<IRentQuery> rentMock = new Mock<IRentQuery>();
             rentMock
                 .Setup(rent => rent.GetRentsOfClient(Client.ClientGuid))
                 .Returns(ClientRents);
 
-            ClientRepo = mockClient.Object;
             RentRepo = rentMock.Object;
         }
 
@@ -49,7 +43,7 @@ namespace Domain.UnitTests.TestCases
         public void GetClientRents_ClientHasRents()
         {
             List<RentEntity> rentExpected = new List<RentEntity>(ClientRents);
-            ICarRentService carRentService = ServicesFactory.CreateCarRentService(ClientRepo, RentRepo);
+            ICarRentService carRentService = ServicesFactory.CreateCarRentService(RentRepo);
 
             Assert.Equal(rentExpected, carRentService.GetClientRents(Client.ClientGuid));
         }

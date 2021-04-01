@@ -1,5 +1,5 @@
 ﻿using Domain.DomainModels;
-using Domain.Ports.Infrastructure;
+using Domain.Ports.Infrastructure.Rent;
 using Domain.Ports.Presenters;
 using System;
 using System.Collections.Generic;
@@ -9,17 +9,15 @@ namespace Domain.Services
 {
     class CarRentService : ICarRentService
     {
-        public IClient Client { get; set; }
-        public IRent Rent { get; set; }
-        public CarRentService(IClient client, IRent rent)
+        private IRentQuery RentQuery { get; }
+        public CarRentService(IRentQuery rent)
         {
-            Client = client;
-            Rent = rent;
+            RentQuery = rent;
         }
 
         public IList<RentEntity> GetClientRents(Guid clientGuid)
         {
-            return Rent.GetRentsOfClient(clientGuid);
+            return RentQuery.GetRentsOfClient(clientGuid);
         }
     }
 }

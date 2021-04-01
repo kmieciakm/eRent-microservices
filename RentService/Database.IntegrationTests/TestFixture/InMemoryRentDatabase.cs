@@ -1,9 +1,10 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using Database.DatabaseContext;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data.Common;
 
-namespace Database.DatabaseContext
+namespace Database.IntegrationTests.TestFixture
 {
     class InMemoryRentDatabase : IDisposable
     {
