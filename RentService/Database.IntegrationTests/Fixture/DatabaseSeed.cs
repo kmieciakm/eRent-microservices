@@ -1,5 +1,6 @@
 ﻿using Database.DatabaseContext;
 using Database.Entities;
+using Database.IntegrationTests.Fixture.Settings;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,44 +10,41 @@ using System.Text;
 
 namespace Database.IntegrationTests.TestFixture
 {
-    class RentDbContextSeed
+    class DatabaseSeed
     {
         private RentDbContext _DbContext { get; set; }
-        public RentDbContextSeed(RentDbContext dbContext)
+        private ISeedSettings _SeedSettings { get; set; }
+
+        public DatabaseSeed(RentDbContext dbContext, ISeedSettings seedSettings)
         {
             _DbContext = dbContext;
+            _SeedSettings = seedSettings;
         }
 
         public void SeedData()
         {
             SeedClientsFromCSV();
-            SeedRents();
+            SeedRentsFromCSV();
             DetachAllEntries();
         }
 
         private void SeedClientsFromCSV()
         {
             var clientsCSV = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetAssembly(typeof(RentDbContextSeed)).Location),
-                "TestData" + Path.DirectorySeparatorChar + "Clients.csv");
+                Directory.GetCurrentDirectory(),
+                _SeedSettings.ClientDataRelativePath);
+
             _DbContext.Clients.AddRange(GetClientsFromCSV(clientsCSV));
             _DbContext.SaveChangesAsync();
         }
 
-        // TODO: Parse Rents data from CSV
-        private void SeedRents()
+        private void SeedRentsFromCSV()
         {
-            _DbContext.Rents.Add(
-                new DbRentEntity()
-                {
-                    RentGuid = Guid.NewGuid(),
-                    RentalDate = DateTime.Now,
-                    EndRentalDate = DateTime.Now.AddDays(7),
-                    TotalRentPrice = 200m,
-                    RentedVehicleVin = "12345678901234567",
-                    ClientGuid = _DbContext.Clients.FirstOrDefault().ClientGuid
-                }
-            );
+            var rentsCSV = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                _SeedSettings.RentsDataRelativePath);
+
+            _DbContext.Rents.AddRange(GetRentsFromCSV(rentsCSV));
             _DbContext.SaveChangesAsync();
         }
 
@@ -68,6 +66,26 @@ namespace Database.IntegrationTests.TestFixture
                         Firstname = clientsFields[1],
                         Lastname = clientsFields[2],
                         Email = clientsFields[3]
+                    };
+                })
+                .ToList();
+        }
+
+        private static List<DbRentEntity> GetRentsFromCSV(string csvRentFilePath)
+        {
+            if (!File.Exists(csvRentFilePath)) return new List<DbRentEntity>();
+
+            return File.ReadAllLines(csvRentFilePath)
+                .Select(line => {
+                    var rentsFields = line.Split(",");
+                    return new DbRentEntity()
+                    {
+                        RentGuid = Guid.Parse(rentsFields[0]),
+                        RentalDate = DateTime.Parse(rentsFields[1]),
+                        EndRentalDate = DateTime.Parse(rentsFields[2]),
+                        TotalRentPrice = decimal.Parse(rentsFields[3]),
+                        RentedVehicleVin = rentsFields[4],
+                        ClientGuid = Guid.Parse(rentsFields[5]),
                     };
                 })
                 .ToList();

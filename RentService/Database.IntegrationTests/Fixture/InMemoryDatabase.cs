@@ -6,7 +6,7 @@ using System.Data.Common;
 
 namespace Database.IntegrationTests.TestFixture
 {
-    class InMemoryRentDatabase : IDisposable
+    class InMemoryDatabase : IDisposable
     {
         private DbConnection _connection;
 

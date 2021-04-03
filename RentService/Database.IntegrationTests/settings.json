@@ -1,0 +1,6 @@
+{
+  "SeedSettings": {
+    "ClientDataRelativePath": "Data/Clients.csv",
+    "RentsDataRelativePath": "Data/Rents.csv"
+  }
+}
