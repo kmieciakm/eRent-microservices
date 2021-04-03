@@ -21,6 +21,7 @@ namespace Database.IntegrationTests.TestFixture
         {
             SeedClientsFromCSV();
             SeedRents();
+            DetachAllEntries();
         }
 
         private void SeedClientsFromCSV()
@@ -49,9 +50,14 @@ namespace Database.IntegrationTests.TestFixture
             _DbContext.SaveChangesAsync();
         }
 
+        private void DetachAllEntries()
+        {
+            _DbContext.ChangeTracker.Clear();
+        }
+
         private static List<DbClientEntity> GetClientsFromCSV(string csvClientFilePath)
         {
-            if (!File.Exists(csvClientFilePath)) return null;
+            if (!File.Exists(csvClientFilePath)) return new List<DbClientEntity>();
 
             return File.ReadAllLines(csvClientFilePath)
                 .Select(line => {

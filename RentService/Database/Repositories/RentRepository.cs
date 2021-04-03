@@ -1,6 +1,8 @@
 ﻿using Database.DatabaseContext;
 using Database.Entities;
+using Database.Helpers;
 using Database.Repositories.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,7 @@ namespace Database.Repositories
         public DbRentEntity Get(Guid rentGuid)
         {
             return _DbContext.Rents
+                .Include(rent => rent.Client)
                 .FirstOrDefault(rent => rent.RentGuid.Equals(rentGuid));
         }
 
@@ -31,22 +34,22 @@ namespace Database.Repositories
         public bool CreateAndSave(DbRentEntity rentEnt)
         {
             _DbContext.Rents.Add(rentEnt);
-            return _DbContext.SaveChanges() >= 1;
+            return DatabaseUtils.CommitChanges(_DbContext) > 0;
         }
 
         public bool UpdateAndSave(DbRentEntity rentEnt)
         {
             _DbContext.Rents.Update(rentEnt);
-            return _DbContext.SaveChanges() >= 1;
+            return DatabaseUtils.CommitChanges(_DbContext) > 0;
         }
 
         public bool DeleteAndSave(Guid rentGuid)
         {
-            var rent = Get(rentGuid);
+            DbRentEntity rent = Get(rentGuid);
             if (rent != null)
             {
                 _DbContext.Rents.Remove(rent);
-                return _DbContext.SaveChanges() >= 1;
+                return DatabaseUtils.CommitChanges(_DbContext) > 0;
             }
             return false;
         }

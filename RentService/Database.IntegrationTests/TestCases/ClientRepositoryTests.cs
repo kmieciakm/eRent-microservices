@@ -61,18 +61,17 @@ namespace Database.IntegrationTests.TestCases
             );
         }
 
-        // TODO: I don't know why, but this bloody shit does not want to cooperate !!!
-        /*[Fact]
+        [Fact]
         public void UpdateClient_ClientDataCorrect()
         {
             var clientGuid = Guid.Parse("11111111-1111-1111-1111-111111111111");
             var client = _Client.Get(clientGuid);
+            client.Email = "brandNewEmail@email.com";
             var updatedCorrectly = _ClientModify.Update(client);
 
             Assert.True(updatedCorrectly);
             Assert.Equal(client, _Client.Get(client.ClientGuid));
-        }*/
-
+        }
 
         [Fact]
         public void DeleteClient_ClientDataCorrect()

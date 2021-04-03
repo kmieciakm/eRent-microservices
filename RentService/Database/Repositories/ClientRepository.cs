@@ -1,5 +1,6 @@
 ﻿using Database.DatabaseContext;
 using Database.Entities;
+using Database.Helpers;
 using Database.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
@@ -16,33 +17,33 @@ namespace Database.Repositories
             _DbContext = dbContext;
         }
 
+        public DbClientEntity Get(Guid clientGuid)
+        {
+            return _DbContext.Clients
+                .FirstOrDefault(client => client.ClientGuid.Equals(clientGuid));
+        }
+
         public bool CreateAndSave(DbClientEntity clientEnt)
         {
             _DbContext.Clients.Add(clientEnt);
-            return _DbContext.SaveChanges() >= 1;
-        }
-
-        public bool DeleteAndSave(Guid clientGuid)
-        {
-            DbClientEntity clientEntity = GetClient(clientGuid);
-            if (clientEntity != null)
-            {
-                _DbContext.Clients.Remove(clientEntity);
-                return _DbContext.SaveChanges() >= 1;
-            }
-            return false;
+            return DatabaseUtils.CommitChanges(_DbContext) > 0;
         }
 
         public bool UpdateAndSave(DbClientEntity clientEnt)
         {
             _DbContext.Clients.Update(clientEnt);
-            return _DbContext.SaveChanges() >= 1;
+            return DatabaseUtils.CommitChanges(_DbContext) > 0;
         }
 
-        public DbClientEntity GetClient(Guid clientGuid)
+        public bool DeleteAndSave(Guid clientGuid)
         {
-            return _DbContext.Clients
-                .FirstOrDefault(client => client.ClientGuid.Equals(clientGuid));
+            DbClientEntity clientEntity = Get(clientGuid);
+            if (clientEntity != null)
+            {
+                _DbContext.Clients.Remove(clientEntity);
+                return DatabaseUtils.CommitChanges(_DbContext) > 0;
+            }
+            return false;
         }
     }
 }

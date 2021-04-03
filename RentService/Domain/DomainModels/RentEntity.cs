@@ -39,6 +39,14 @@ namespace Domain.DomainModels
         /// Price for the entire rental period.
         /// </summary>
         public decimal TotalRentPrice { get; }
+        public bool Expired { get { return DateTime.Compare(DateTime.Now, EndRentalDate) > 0; } }
+
+        public void ExtendRentTime(int days)
+        {
+            // TODO: Validate parameter and check if rent does not expired
+            EndRentalDate.AddDays(days);
+            // TODO: Adjust TotalRentPrice
+        }
 
         public override bool Equals(object obj)
         {

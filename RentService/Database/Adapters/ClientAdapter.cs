@@ -29,7 +29,7 @@ namespace Database.Adapters
 
         ClientEntity IClientQuery.Get(Guid clientGuid)
         {
-            var dbClient = _ClientRepository.GetClient(clientGuid);
+            var dbClient = _ClientRepository.Get(clientGuid);
             return Mapper.Client.MapToClientEntity(dbClient);
         }
 

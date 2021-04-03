@@ -10,15 +10,17 @@ namespace Database.IntegrationTests.TestCases
     {
         private IRentQuery _Rent { get; set; }
         private IRentCreate _RentCreate { get; set; }
+        private IRentModify _RentModify { get; set; }
         private IRentCancel _RentCancel { get; set; }
 
         /// <remarks>
         /// Constructor is called before each test.
         /// </remarks>
-        public RentRepositoryTests(IRentQuery rentQuery, IRentCreate rentCreate, IRentCancel rentCancel)
+        public RentRepositoryTests(IRentQuery rentQuery, IRentCreate rentCreate, IRentModify rentModify, IRentCancel rentCancel)
         {
             _Rent = rentQuery;
             _RentCreate = rentCreate;
+            _RentModify = rentModify;
             _RentCancel = rentCancel;
         }
 
@@ -59,6 +61,19 @@ namespace Database.IntegrationTests.TestCases
         }
 
         [Fact]
+        public void UpdateRent_RentDataCorrect()
+        {
+            var rentData = RentsFactory.GetSampleRentEntity();
+            _RentCreate.Create(rentData);
+            var rent = _Rent.Get(rentData.RentGuid);
+            rent.ExtendRentTime(2);
+            var updatedCorrectly = _RentModify.Update(rent);
+
+            Assert.True(updatedCorrectly);
+            Assert.Equal(rent, _Rent.Get(rent.RentGuid));
+        }
+
+        [Fact]
         public void DeleteRent_RentExists()
         {
             var rent = RentsFactory.GetSampleRentEntity();
@@ -79,7 +94,5 @@ namespace Database.IntegrationTests.TestCases
 
             Assert.False(deletedCorrectly);
         }
-
-        // TODO: Test update method of _IRent
     }
 }

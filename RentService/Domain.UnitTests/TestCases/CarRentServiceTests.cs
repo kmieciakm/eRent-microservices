@@ -1,5 +1,4 @@
 ﻿using Domain.DomainModels;
-using Domain.Ports.Infrastructure.Client;
 using Domain.Ports.Infrastructure.Rent;
 using Domain.Ports.Presenters;
 using Domain.Services;
@@ -16,7 +15,7 @@ namespace Domain.UnitTests.TestCases
     {
         private ClientEntity Client { get; set; }
         private List<RentEntity> ClientRents { get; set; }
-        private IRentQuery RentRepo { get; set; }
+        private ICarRentService RentService { get; set; }
 
         /// <remarks>
         /// Constructor is called before each test.
@@ -30,7 +29,8 @@ namespace Domain.UnitTests.TestCases
                 .Setup(rent => rent.GetRentsOfClient(Client.ClientGuid))
                 .Returns(ClientRents);
 
-            RentRepo = rentMock.Object;
+            var rentQuery = rentMock.Object;
+            RentService = ServicesFactory.CreateCarRentService(rentQuery);
         }
 
         [Fact]
@@ -43,9 +43,7 @@ namespace Domain.UnitTests.TestCases
         public void GetClientRents_ClientHasRents()
         {
             List<RentEntity> rentExpected = new List<RentEntity>(ClientRents);
-            ICarRentService carRentService = ServicesFactory.CreateCarRentService(RentRepo);
-
-            Assert.Equal(rentExpected, carRentService.GetClientRents(Client.ClientGuid));
+            Assert.Equal(rentExpected, RentService.GetClientRents(Client.ClientGuid));
         }
     }
 }

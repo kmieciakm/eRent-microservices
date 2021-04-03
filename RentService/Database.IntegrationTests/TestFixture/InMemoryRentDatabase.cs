@@ -12,8 +12,9 @@ namespace Database.IntegrationTests.TestFixture
 
         private DbContextOptions<RentDbContext> CreateOptions => new DbContextOptionsBuilder<RentDbContext>()
             .EnableSensitiveDataLogging()
-            .EnableServiceProviderCaching(false)
-            .UseSqlite(_connection).Options;
+            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+            .UseSqlite(_connection)
+            .Options;
 
         public RentDbContext CreateDbContext()
         {
