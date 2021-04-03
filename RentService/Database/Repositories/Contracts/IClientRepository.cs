@@ -6,8 +6,8 @@ namespace Database.Repositories.Contracts
     interface IClientRepository
     {
         DbClientEntity Get(Guid clientGuid);
-        bool CreateAndSave(DbClientEntity clientEnt);
-        bool UpdateAndSave(DbClientEntity clientEnt);
+        bool CreateAndSave(DbClientEntity client);
+        bool UpdateAndSave(DbClientEntity client);
         bool DeleteAndSave(Guid clientGuid);
     }
 }

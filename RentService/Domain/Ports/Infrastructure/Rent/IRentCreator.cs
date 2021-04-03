@@ -8,7 +8,7 @@ namespace Domain.Ports.Infrastructure.Rent
     /// <summary>
     /// Specifies Rent creation use case.
     /// </summary>
-    public interface IRentCreate
+    public interface IRentCreator
     {
         bool Create(RentEntity rent);
     }

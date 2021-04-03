@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Database.Adapters
 {
-    class RentAdapter : IRentQuery, IRentCreate, IRentCancel, IRentModify
+    class RentAdapter : IRentQuery, IRentCreator, IRentCancel, IRentModify
     {
         private IRentRepository _RentRepository { get; set; }
         public RentAdapter(IRentRepository rentRepository)
@@ -17,7 +17,7 @@ namespace Database.Adapters
             _RentRepository = rentRepository;
         }
 
-        bool IRentCreate.Create(RentEntity rent)
+        bool IRentCreator.Create(RentEntity rent)
         {
             var dbRent = Mapper.Rent.MapToDbRentEntity(rent);
             return _RentRepository.CreateAndSave(dbRent);
@@ -28,7 +28,7 @@ namespace Database.Adapters
             return _RentRepository.DeleteAndSave(rentGuid);
         }
 
-        RentEntity IRentQuery.Get(Guid rentGuid)
+        RentEntity IRentQuery.GetRent(Guid rentGuid)
         {
             var dbRent = _RentRepository.Get(rentGuid);
             return Mapper.Rent.MapToRentEntity(dbRent);

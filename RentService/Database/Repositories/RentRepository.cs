@@ -31,24 +31,24 @@ namespace Database.Repositories
                 .Where(rent => rent.ClientGuid.Equals(clientGuid));
         }
 
-        public bool CreateAndSave(DbRentEntity rentEnt)
+        public bool CreateAndSave(DbRentEntity rent)
         {
-            _DbContext.Rents.Add(rentEnt);
+            _DbContext.Rents.Add(rent);
             return DatabaseUtils.CommitChanges(_DbContext) > 0;
         }
 
-        public bool UpdateAndSave(DbRentEntity rentEnt)
+        public bool UpdateAndSave(DbRentEntity rent)
         {
-            _DbContext.Rents.Update(rentEnt);
+            _DbContext.Rents.Update(rent);
             return DatabaseUtils.CommitChanges(_DbContext) > 0;
         }
 
         public bool DeleteAndSave(Guid rentGuid)
         {
-            DbRentEntity rent = Get(rentGuid);
-            if (rent != null)
+            var rentToDelete = Get(rentGuid);
+            if (rentToDelete != null)
             {
-                _DbContext.Rents.Remove(rent);
+                _DbContext.Rents.Remove(rentToDelete);
                 return DatabaseUtils.CommitChanges(_DbContext) > 0;
             }
             return false;

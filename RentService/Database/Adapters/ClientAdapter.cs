@@ -27,7 +27,7 @@ namespace Database.Adapters
             return _ClientRepository.DeleteAndSave(clientGuid);
         }
 
-        ClientEntity IClientQuery.Get(Guid clientGuid)
+        ClientEntity IClientQuery.GetClient(Guid clientGuid)
         {
             var dbClient = _ClientRepository.Get(clientGuid);
             return Mapper.Client.MapToClientEntity(dbClient);

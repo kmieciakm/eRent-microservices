@@ -23,24 +23,24 @@ namespace Database.Repositories
                 .FirstOrDefault(client => client.ClientGuid.Equals(clientGuid));
         }
 
-        public bool CreateAndSave(DbClientEntity clientEnt)
+        public bool CreateAndSave(DbClientEntity client)
         {
-            _DbContext.Clients.Add(clientEnt);
+            _DbContext.Clients.Add(client);
             return DatabaseUtils.CommitChanges(_DbContext) > 0;
         }
 
-        public bool UpdateAndSave(DbClientEntity clientEnt)
+        public bool UpdateAndSave(DbClientEntity client)
         {
-            _DbContext.Clients.Update(clientEnt);
+            _DbContext.Clients.Update(client);
             return DatabaseUtils.CommitChanges(_DbContext) > 0;
         }
 
         public bool DeleteAndSave(Guid clientGuid)
         {
-            DbClientEntity clientEntity = Get(clientGuid);
-            if (clientEntity != null)
+            var clientToDelete = Get(clientGuid);
+            if (clientToDelete != null)
             {
-                _DbContext.Clients.Remove(clientEntity);
+                _DbContext.Clients.Remove(clientToDelete);
                 return DatabaseUtils.CommitChanges(_DbContext) > 0;
             }
             return false;

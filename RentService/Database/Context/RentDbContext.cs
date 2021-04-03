@@ -15,5 +15,6 @@ namespace Database.DatabaseContext
 
         public DbSet<DbClientEntity> Clients { get; set; }
         public DbSet<DbRentEntity> Rents { get; set; }
+        public DbSet<DbCarEntity> Cars { get; set; }
     }
 }

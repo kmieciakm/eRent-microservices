@@ -33,7 +33,7 @@ namespace Database.IntegrationTests
             services.AddScoped<IClientModify, ClientAdapter>();
             services.AddScoped<IClientDelete, ClientAdapter>();
             services.AddScoped<IRentQuery, RentAdapter>();
-            services.AddScoped<IRentCreate, RentAdapter>();
+            services.AddScoped<IRentCreator, RentAdapter>();
             services.AddScoped<IRentModify, RentAdapter>();
             services.AddScoped<IRentCancel, RentAdapter>();
         }

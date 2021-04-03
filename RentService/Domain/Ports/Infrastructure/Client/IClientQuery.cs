@@ -10,6 +10,6 @@ namespace Domain.Ports.Infrastructure.Client
     /// </summary>
     public interface IClientQuery
     {
-        ClientEntity Get(Guid clientGuid);
+        ClientEntity GetClient(Guid clientGuid);
     }
 }

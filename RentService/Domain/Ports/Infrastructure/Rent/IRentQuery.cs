@@ -10,7 +10,7 @@ namespace Domain.Ports.Infrastructure.Rent
     /// </summary>
     public interface IRentQuery
     {
-        RentEntity Get(Guid rentGuid);
+        RentEntity GetRent(Guid rentGuid);
         List<RentEntity> GetRentsOfClient(Guid clientGuid);
     }
 }

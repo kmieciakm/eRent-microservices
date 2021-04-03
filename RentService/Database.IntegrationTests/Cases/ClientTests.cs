@@ -34,7 +34,7 @@ namespace Database.IntegrationTests.TestCases
         public void GetClient_ClientDataCorrect()
         {
             var clientGuid = Guid.Parse("11111111-1111-1111-1111-111111111111");
-            var client = _Client.Get(clientGuid);
+            var client = _Client.GetClient(clientGuid);
 
             Assert.Equal(clientGuid, client.ClientGuid);
         }
@@ -51,7 +51,7 @@ namespace Database.IntegrationTests.TestCases
             var createdCorrectly = _ClientCreate.Create(client);
 
             Assert.True(createdCorrectly);
-            Assert.Equal(client, _Client.Get(client.ClientGuid));
+            Assert.Equal(client, _Client.GetClient(client.ClientGuid));
         }
 
         [Fact]
@@ -73,12 +73,12 @@ namespace Database.IntegrationTests.TestCases
         public void UpdateClient_ClientDataCorrect()
         {
             var clientGuid = Guid.Parse("11111111-1111-1111-1111-111111111111");
-            var client = _Client.Get(clientGuid);
+            var client = _Client.GetClient(clientGuid);
             client.Email = "brandNewEmail@email.com";
             var updatedCorrectly = _ClientModify.Update(client);
 
             Assert.True(updatedCorrectly);
-            Assert.Equal(client, _Client.Get(client.ClientGuid));
+            Assert.Equal(client, _Client.GetClient(client.ClientGuid));
         }
 
         [Fact]
@@ -88,7 +88,7 @@ namespace Database.IntegrationTests.TestCases
             var deletedCorrectly = _ClientDelete.Delete(clientGuid);
 
             Assert.True(deletedCorrectly);
-            Assert.Null(_Client.Get(clientGuid));
+            Assert.Null(_Client.GetClient(clientGuid));
         }
 
         [Fact]

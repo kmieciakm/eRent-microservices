@@ -10,17 +10,17 @@ namespace Database.IntegrationTests.TestCases
     public class RentTests
     {
         private IRentQuery _Rent { get; set; }
-        private IRentCreate _RentCreate { get; set; }
+        private IRentCreator _RentCreator { get; set; }
         private IRentModify _RentModify { get; set; }
         private IRentCancel _RentCancel { get; set; }
 
         /// <remarks>
         /// Constructor is called before each test.
         /// </remarks>
-        public RentTests(IRentQuery rentQuery, IRentCreate rentCreate, IRentModify rentModify, IRentCancel rentCancel)
+        public RentTests(IRentQuery rentQuery, IRentCreator rentCreator, IRentModify rentModify, IRentCancel rentCancel)
         {
             _Rent = rentQuery;
-            _RentCreate = rentCreate;
+            _RentCreator = rentCreator;
             _RentModify = rentModify;
             _RentCancel = rentCancel;
         }
@@ -48,10 +48,10 @@ namespace Database.IntegrationTests.TestCases
                 123m
             );
 
-            var createdCorrectly = _RentCreate.Create(rent);
+            var createdCorrectly = _RentCreator.Create(rent);
 
             Assert.True(createdCorrectly);
-            Assert.NotNull(_Rent.Get(rent.RentGuid));
+            Assert.NotNull(_Rent.GetRent(rent.RentGuid));
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace Database.IntegrationTests.TestCases
             );
 
             Assert.Throws<MapperException>(() =>
-                _RentCreate.Create(rent)
+                _RentCreator.Create(rent)
             );
         }
 
@@ -75,7 +75,7 @@ namespace Database.IntegrationTests.TestCases
         public void GetRent()
         {
             var rentGuid = Guid.Parse("11111111-1111-1111-1111-111111111111");
-            var rent = _Rent.Get(rentGuid);
+            var rent = _Rent.GetRent(rentGuid);
 
             Assert.Equal(rentGuid, rent.RentGuid);
         }
@@ -84,12 +84,12 @@ namespace Database.IntegrationTests.TestCases
         public void UpdateRent_RentDataCorrect()
         {
             var rentGuid = Guid.Parse("11111111-1111-1111-1111-111111111111");
-            var rent = _Rent.Get(rentGuid);
+            var rent = _Rent.GetRent(rentGuid);
             rent.ExtendRentTime(2);
             var updatedCorrectly = _RentModify.Update(rent);
 
             Assert.True(updatedCorrectly);
-            Assert.Equal(rent, _Rent.Get(rent.RentGuid));
+            Assert.Equal(rent, _Rent.GetRent(rent.RentGuid));
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace Database.IntegrationTests.TestCases
             var deletedCorrectly = _RentCancel.Delete(rentGuid);
 
             Assert.True(deletedCorrectly);
-            Assert.Null(_Rent.Get(rentGuid));
+            Assert.Null(_Rent.GetRent(rentGuid));
         }
 
         [Fact]
