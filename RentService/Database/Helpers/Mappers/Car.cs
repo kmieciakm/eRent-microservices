@@ -20,8 +20,22 @@ namespace Database.Helpers.Mappers
                     dbCarEntity.Brand,
                     dbCarEntity.Model,
                     dbCarEntity.Mileage,
+                    dbCarEntity.PricePerDay,
                     dbCarEntity.Year
                 );
+            }
+            public static DbCarEntity MapToDbCarEntity(CarEntity carEntity)
+            {
+                if (carEntity == null) return null;
+                return new DbCarEntity()
+                {
+                    Vin = carEntity.Vin.Value,
+                    Brand = carEntity.Brand,
+                    Model = carEntity.Model,
+                    Mileage = carEntity.Mileage,
+                    PricePerDay = carEntity.PricePerDay,
+                    Year = carEntity.Year
+                };
             }
         }
     }

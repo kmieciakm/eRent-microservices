@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Database.Adapters
 {
-    class CarAdapter : ICarQuery
+    class CarAdapter : ICarQuery, ICarCreate, ICarDelete, ICarModify
     {
         private ICarRepository _CarRepository { get; set; }
 
@@ -18,15 +18,32 @@ namespace Database.Adapters
             _CarRepository = carRepository;
         }
 
-        public bool Exist(Vin carVin)
+        bool ICarQuery.Exist(Vin carVin)
         {
             return _CarRepository.Exist(carVin);
         }
 
-        public CarEntity Get(Vin carVin)
+        CarEntity ICarQuery.Get(Vin carVin)
         {
             var dbCar = _CarRepository.Get(carVin);
             return Mapper.Car.MapToCarEntity(dbCar);
+        }
+
+        bool ICarCreate.Create(CarEntity car)
+        {
+            var dbCar = Mapper.Car.MapToDbCarEntity(car);
+            return _CarRepository.CreateAndSave(dbCar);
+        }
+
+        bool ICarModify.Update(CarEntity car)
+        {
+            var dbCar = Mapper.Car.MapToDbCarEntity(car);
+            return _CarRepository.UpdateAndSave(dbCar);
+        }
+
+        bool ICarDelete.Delete(Vin vin)
+        {
+            return _CarRepository.DeleteAndSave(vin);
         }
     }
 }

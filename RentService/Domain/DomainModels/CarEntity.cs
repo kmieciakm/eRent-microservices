@@ -12,17 +12,23 @@ namespace Domain.DomainModels
     /// </summary>
     public class CarEntity
     {
-        public CarEntity(Vin vin, string brand, string model, long mileage, int year)
+        public CarEntity(Vin vin, string brand, string model, long mileage, decimal pricePerDay, int year)
         {
             if (mileage < 0)
             {
                 throw new ArgumentException($"Cannot create new Car entity. Mileage must be possitive but was: {mileage}");
-            }    
+            }
+
+            if (pricePerDay < 0)
+            {
+                throw new ArgumentException($"Cannot create new Car entity. Price per day must be possitive but was: {pricePerDay}");
+            }
 
             Vin = vin;
             Brand = brand;
             Model = model;
             Mileage = mileage;
+            PricePerDay = pricePerDay;
             Year = year;
         }
 
@@ -40,12 +46,13 @@ namespace Domain.DomainModels
                    Brand == car.Brand &&
                    Model == car.Model &&
                    Mileage == car.Mileage &&
+                   PricePerDay == car.PricePerDay &&
                    Year == car.Year;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Vin, Brand, Model, Mileage, Year);
+            return HashCode.Combine(Vin, Brand, Model, Mileage, PricePerDay, Year);
         }
     }
 }
