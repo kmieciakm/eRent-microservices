@@ -1,6 +1,8 @@
 ﻿using Database.DatabaseContext;
 using Database.Entities;
+using Database.Helpers;
 using Database.Repositories.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,7 @@ namespace Database.Repositories
         public DbRentEntity Get(Guid rentGuid)
         {
             return _DbContext.Rents
+                .Include(rent => rent.Client)
                 .FirstOrDefault(rent => rent.RentGuid.Equals(rentGuid));
         }
 
@@ -28,25 +31,25 @@ namespace Database.Repositories
                 .Where(rent => rent.ClientGuid.Equals(clientGuid));
         }
 
-        public bool CreateAndSave(DbRentEntity rentEnt)
+        public bool CreateAndSave(DbRentEntity rent)
         {
-            _DbContext.Rents.Add(rentEnt);
-            return _DbContext.SaveChanges() >= 1;
+            _DbContext.Rents.Add(rent);
+            return DatabaseUtils.CommitChanges(_DbContext) > 0;
         }
 
-        public bool UpdateAndSave(DbRentEntity rentEnt)
+        public bool UpdateAndSave(DbRentEntity rent)
         {
-            _DbContext.Rents.Update(rentEnt);
-            return _DbContext.SaveChanges() >= 1;
+            _DbContext.Rents.Update(rent);
+            return DatabaseUtils.CommitChanges(_DbContext) > 0;
         }
 
         public bool DeleteAndSave(Guid rentGuid)
         {
-            var rent = Get(rentGuid);
-            if (rent != null)
+            var rentToDelete = Get(rentGuid);
+            if (rentToDelete != null)
             {
-                _DbContext.Rents.Remove(rent);
-                return _DbContext.SaveChanges() >= 1;
+                _DbContext.Rents.Remove(rentToDelete);
+                return DatabaseUtils.CommitChanges(_DbContext) > 0;
             }
             return false;
         }

@@ -1,7 +1,7 @@
-﻿using Database.Helpers;
+﻿using Database.Helpers.Mappers;
 using Database.Repositories.Contracts;
 using Domain.DomainModels;
-using Domain.Ports.Infrastructure;
+using Domain.Ports.Infrastructure.Rent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Database.Adapters
 {
-    class RentAdapter : IRent
+    class RentAdapter : IRentQuery, IRentCreator, IRentCancel, IRentModify
     {
         private IRentRepository _RentRepository { get; set; }
         public RentAdapter(IRentRepository rentRepository)
@@ -17,34 +17,34 @@ namespace Database.Adapters
             _RentRepository = rentRepository;
         }
 
-        public bool Create(RentEntity rent)
+        bool IRentCreator.Create(RentEntity rent)
         {
-            var dbRent = EntitiesMapper.MapToDbRentEntity(rent);
+            var dbRent = Mapper.Rent.MapToDbRentEntity(rent);
             return _RentRepository.CreateAndSave(dbRent);
         }
 
-        public bool Delete(Guid rentGuid)
+        bool IRentCancel.Delete(Guid rentGuid)
         {
             return _RentRepository.DeleteAndSave(rentGuid);
         }
 
-        public RentEntity Get(Guid rentGuid)
+        RentEntity IRentQuery.GetRent(Guid rentGuid)
         {
             var dbRent = _RentRepository.Get(rentGuid);
-            return EntitiesMapper.MapToRentEntity(dbRent);
+            return Mapper.Rent.MapToRentEntity(dbRent);
         }
 
-        public List<RentEntity> GetRentsOfClient(Guid clientGuid)
+        List<RentEntity> IRentQuery.GetRentsOfClient(Guid clientGuid)
         {
             var dbRents = _RentRepository.GetByClient(clientGuid);
-            return EntitiesMapper
+            return Mapper.Rent
                 .MapToRentEntity(dbRents)
                 .ToList();
         }
 
-        public bool Update(RentEntity rent)
+        bool IRentModify.Update(RentEntity rent)
         {
-            var dbRent = EntitiesMapper.MapToDbRentEntity(rent);
+            var dbRent = Mapper.Rent.MapToDbRentEntity(rent);
             return _RentRepository.UpdateAndSave(dbRent);
         }
     }

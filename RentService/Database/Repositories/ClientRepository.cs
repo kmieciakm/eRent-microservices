@@ -1,7 +1,7 @@
 ﻿using Database.DatabaseContext;
 using Database.Entities;
+using Database.Helpers;
 using Database.Repositories.Contracts;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,33 +17,33 @@ namespace Database.Repositories
             _DbContext = dbContext;
         }
 
-        public bool CreateAndSave(DbClientEntity clientEnt)
+        public DbClientEntity Get(Guid clientGuid)
         {
-            _DbContext.Clients.Add(clientEnt);
-            return _DbContext.SaveChanges() >= 1;
+            return _DbContext.Clients
+                .FirstOrDefault(client => client.ClientGuid.Equals(clientGuid));
+        }
+
+        public bool CreateAndSave(DbClientEntity client)
+        {
+            _DbContext.Clients.Add(client);
+            return DatabaseUtils.CommitChanges(_DbContext) > 0;
+        }
+
+        public bool UpdateAndSave(DbClientEntity client)
+        {
+            _DbContext.Clients.Update(client);
+            return DatabaseUtils.CommitChanges(_DbContext) > 0;
         }
 
         public bool DeleteAndSave(Guid clientGuid)
         {
-            DbClientEntity clientEntity = GetClient(clientGuid);
-            if (clientEntity != null)
+            var clientToDelete = Get(clientGuid);
+            if (clientToDelete != null)
             {
-                _DbContext.Clients.Remove(clientEntity);
-                return _DbContext.SaveChanges() >= 1;
+                _DbContext.Clients.Remove(clientToDelete);
+                return DatabaseUtils.CommitChanges(_DbContext) > 0;
             }
             return false;
-        }
-
-        public bool UpdateAndSave(DbClientEntity clientEnt)
-        {
-            _DbContext.Clients.Update(clientEnt);
-            return _DbContext.SaveChanges() >= 1;
-        }
-
-        public DbClientEntity GetClient(Guid clientGuid)
-        {
-            return _DbContext.Clients
-                .FirstOrDefault(client => client.ClientGuid.Equals(clientGuid));
         }
     }
 }

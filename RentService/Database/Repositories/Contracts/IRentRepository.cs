@@ -9,8 +9,8 @@ namespace Database.Repositories.Contracts
     {
         DbRentEntity Get(Guid rentGuid);
         IEnumerable<DbRentEntity> GetByClient(Guid clientGuid);
-        bool CreateAndSave(DbRentEntity rentEnt);
-        bool UpdateAndSave(DbRentEntity rentEnt);
+        bool CreateAndSave(DbRentEntity rent);
+        bool UpdateAndSave(DbRentEntity rent);
         bool DeleteAndSave(Guid rentGuid);
     }
 }

@@ -12,6 +12,12 @@ namespace Domain.DomainModels
     {
         public RentEntity(Guid rentGuid, ClientEntity client, DateTime rentalDate, DateTime endRentalDate, Vin rentedVehicleVin, decimal totalRentPrice)
         {
+            bool isRentPeriodCorrect = IsValidRentPeriod(rentalDate, endRentalDate);
+            if (!isRentPeriodCorrect)
+            {
+                throw new ArgumentException($"Given rent period is incorrect. Start day: {rentalDate}, last day: {endRentalDate}");
+            }
+
             RentGuid = rentGuid;
             Client = client;
             RentalDate = rentalDate;
@@ -21,7 +27,7 @@ namespace Domain.DomainModels
         }
 
         public Guid RentGuid { get; }
-        public ClientEntity Client { get; private set; }
+        public ClientEntity Client { get; private set; } // IMPROVEMENT: Change to client Guid ???
         /// <summary>
         /// Specifies begining of a car rent.
         /// </summary>
@@ -39,6 +45,19 @@ namespace Domain.DomainModels
         /// Price for the entire rental period.
         /// </summary>
         public decimal TotalRentPrice { get; }
+        public bool Expired { get { return DateTime.Compare(DateTime.Now, EndRentalDate) > 0; } }
+
+        public void ExtendRentTime(int days)
+        {
+            // TODO: Validate parameter and check if rent does not expired
+            EndRentalDate.AddDays(days);
+            // TODO: Adjust TotalRentPrice
+        }
+
+        private static bool IsValidRentPeriod(DateTime startDate, DateTime endDate)
+        {
+            return DateTime.Compare(startDate, endDate) < 0;
+        }
 
         public override bool Equals(object obj)
         {
