@@ -1,5 +1,4 @@
-﻿using Domain.DomainModels;
-using Domain.DomainModels.ValueObjects;
+﻿using Domain.Ports.Presenters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,34 +14,24 @@ namespace Web.Controllers
     [ApiController]
     public class RentsController : ControllerBase
     {
-        private readonly ILogger<RentsController> _logger;
+        private ILogger<RentsController> _Logger { get; }
+        private ICarRentService _CarRentService { get; }
 
-        public RentsController(ILogger<RentsController> logger)
+        public RentsController(ILogger<RentsController> logger, ICarRentService carRentService)
         {
-            _logger = logger;
+            _Logger = logger;
+            _CarRentService = carRentService;
         }
 
         [HttpGet("{clientId}")]
         public ActionResult<IEnumerable<RentDto>> GetRentsOfClient(Guid clientId)
         {
-            var rent = new RentEntity(
-                Guid.NewGuid(),
-                new ClientEntity (
-                    Guid.NewGuid(),
-                    "Nathaniel",
-                    "Flynn",
-                    "dignissim@tempor.net"
-                ),
-                DateTime.Now,
-                DateTime.Now.AddDays(2),
-                Vin.FromString("DRT12343256912305"),
-                123m
-            );
+            var rents = new List<RentDto>();
+            _CarRentService
+                .GetClientRentals(clientId).ToList()
+                .ForEach(rent => rents.Add(new RentDto(rent)));
 
-            return new List<RentDto>()
-            {
-                new RentDto(rent)
-            };
+            return rents;
         }
     }
 }

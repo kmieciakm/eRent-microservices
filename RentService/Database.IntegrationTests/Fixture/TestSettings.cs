@@ -1,4 +1,4 @@
-﻿using Database.IntegrationTests.Fixture.Settings;
+﻿using Database.Seed;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;

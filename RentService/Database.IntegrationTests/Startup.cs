@@ -1,10 +1,9 @@
 ﻿using Database.Adapters;
-using Database.DatabaseContext;
+using Database.Context;
 using Database.IntegrationTests.Fixture;
-using Database.IntegrationTests.Fixture.Settings;
-using Database.IntegrationTests.TestFixture;
 using Database.Repositories;
 using Database.Repositories.Contracts;
+using Database.Seed;
 using Domain.Ports.Infrastructure.Client;
 using Domain.Ports.Infrastructure.Rent;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,7 +41,7 @@ namespace Database.IntegrationTests
         {
             var settings = serviceProvider.GetRequiredService<ISeedSettings>();
             var dbContext = new InMemoryDatabase().CreateDbContext();
-            var dbContextSeed = new DatabaseSeed(dbContext, settings);
+            var dbContextSeed = new RentDbSeed(dbContext, settings);
             dbContextSeed.SeedData();
             return dbContext;
         }

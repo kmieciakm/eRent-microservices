@@ -38,11 +38,12 @@ namespace Web
 
             services
                 .AddDbContext(options => options.UseInMemoryDatabase("InMemoryRentDatabase"))
+                .AddSeedSettings(Configuration)
                 .AddRepositories()
                 .AddApplicationServices();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -52,6 +53,8 @@ namespace Web
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Car Rent v1");
                     c.RoutePrefix = "docs";
                 });
+
+                app.SeedRentDatabase(serviceProvider);
             }
 
             app.UseHttpsRedirection();

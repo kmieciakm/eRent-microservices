@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.UnitTests", "Domain.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database.IntegrationTests", "Database.IntegrationTests\Database.IntegrationTests.csproj", "{95F07222-EC8D-480B-9C5D-12847B99368D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{56B415BE-51E7-4582-9A33-CC39F98FE007}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{56B415BE-51E7-4582-9A33-CC39F98FE007}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Setup", "Web.Setup\Web.Setup.csproj", "{4612C98D-8EB5-4C9F-84A2-28C976C177CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Setup", "Web.Setup\Web.Setup.csproj", "{4612C98D-8EB5-4C9F-84A2-28C976C177CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

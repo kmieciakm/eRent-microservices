@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Database.DatabaseContext
+namespace Database.Context
 {
     class RentDbContext : DbContext
     {

@@ -1,4 +1,4 @@
-﻿namespace Database.IntegrationTests.Fixture.Settings
+﻿namespace Database.Seed
 {
     public interface ISeedSettings
     {

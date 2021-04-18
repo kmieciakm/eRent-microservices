@@ -1,4 +1,4 @@
-﻿using Database.DatabaseContext;
+﻿using Database.Context;
 using Database.Entities;
 using Database.Helpers;
 using Database.Repositories.Contracts;
@@ -28,6 +28,7 @@ namespace Database.Repositories
         public IEnumerable<DbRentEntity> GetByClient(Guid clientGuid)
         {
             return _DbContext.Rents
+                .Include(rent => rent.Client)
                 .Where(rent => rent.ClientGuid.Equals(clientGuid));
         }
 

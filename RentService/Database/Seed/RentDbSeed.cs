@@ -1,6 +1,5 @@
-﻿using Database.DatabaseContext;
+﻿using Database.Context;
 using Database.Entities;
-using Database.IntegrationTests.Fixture.Settings;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,14 +7,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Database.IntegrationTests.TestFixture
+namespace Database.Seed
 {
-    class DatabaseSeed
+    class RentDbSeed
     {
         private RentDbContext _DbContext { get; set; }
         private ISeedSettings _SeedSettings { get; set; }
 
-        public DatabaseSeed(RentDbContext dbContext, ISeedSettings seedSettings)
+        public RentDbSeed(RentDbContext dbContext, ISeedSettings seedSettings)
         {
             _DbContext = dbContext;
             _SeedSettings = seedSettings;
@@ -58,7 +57,8 @@ namespace Database.IntegrationTests.TestFixture
             if (!File.Exists(csvClientFilePath)) return new List<DbClientEntity>();
 
             return File.ReadAllLines(csvClientFilePath)
-                .Select(line => {
+                .Select(line =>
+                {
                     var clientsFields = line.Split(",");
                     return new DbClientEntity()
                     {
@@ -76,7 +76,8 @@ namespace Database.IntegrationTests.TestFixture
             if (!File.Exists(csvRentFilePath)) return new List<DbRentEntity>();
 
             return File.ReadAllLines(csvRentFilePath)
-                .Select(line => {
+                .Select(line =>
+                {
                     var rentsFields = line.Split(",");
                     return new DbRentEntity()
                     {
