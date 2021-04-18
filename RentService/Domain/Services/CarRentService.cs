@@ -47,7 +47,10 @@ namespace Domain.Services
                 throw new RentException("Cannot rent a car. Given car does not exists.", clientGuid, carVin);
             }
 
-            // TODO: Check if startRentDate is not in the past
+            if (DateTime.Compare(startRentDate, DateTime.Now) < 0)
+            {
+                throw new RentException("Cannot rent a car. The initial rental date has already expired.", clientGuid, carVin);
+            }
 
             try
             {

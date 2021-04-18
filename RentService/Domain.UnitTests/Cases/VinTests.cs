@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace Domain.UnitTests.TestCases
+namespace Domain.UnitTests.Cases
 {
     public class VinTests
     {
