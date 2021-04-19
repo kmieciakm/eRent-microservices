@@ -34,6 +34,7 @@ namespace Database.Repositories
 
         public bool CreateAndSave(DbRentEntity rent)
         {
+            rent.Client = null; // REMARKS: Prevent creating another entity of an already existing client.
             _DbContext.Rents.Add(rent);
             return DatabaseUtils.CommitChanges(_DbContext) > 0;
         }

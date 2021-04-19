@@ -37,7 +37,9 @@ namespace Web
             });
 
             services
-                .AddDbContext(options => options.UseInMemoryDatabase("InMemoryRentDatabase"))
+                .AddDbContext(options => options
+                    .UseInMemoryDatabase("InMemoryRentDatabase")
+                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking))
                 .AddSeedSettings(Configuration)
                 .AddRepositories()
                 .AddApplicationServices();

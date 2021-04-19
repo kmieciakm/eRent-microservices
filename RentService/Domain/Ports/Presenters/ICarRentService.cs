@@ -12,6 +12,12 @@ namespace Domain.Ports.Presenters
     public interface ICarRentService
     {
         /// <summary>
+        /// Returns rental of the given GUID.
+        /// </summary>
+        /// <param name="rentalGuid">Rental identificator.</param>
+        /// <returns>Rental information.</returns>
+        RentEntity GetRental(Guid rentalGuid);
+        /// <summary>
         /// Returns all rentals of the given client.
         /// </summary>
         /// <param name="clientGuid">Client identificator.</param>

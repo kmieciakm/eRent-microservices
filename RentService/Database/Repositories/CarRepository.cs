@@ -21,12 +21,13 @@ namespace Database.Repositories
         public DbCarEntity Get(Vin vin)
         {
             return _DbContext.Cars
-                .FirstOrDefault(car => car.Vin.Equals(vin));
+                .FirstOrDefault(car => car.Vin == vin.Value);
         }
+
         public bool Exist(Vin vin)
         {
             return _DbContext.Cars
-               .Any(car => car.Vin.Equals(vin));
+               .Any(car => car.Vin == vin.Value);
         }
 
         public bool CreateAndSave(DbCarEntity car)
