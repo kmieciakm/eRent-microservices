@@ -17,6 +17,7 @@ namespace Database.IntegrationTests.Fixture
     {
         public string ClientDataRelativePath { get; set; }
         public string RentsDataRelativePath { get; set; }
+        public string CarsDataRelativePath { get; set; }
 
         public TestSettings()
         {

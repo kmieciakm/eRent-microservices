@@ -4,5 +4,6 @@
     {
         string ClientDataRelativePath { get; }
         string RentsDataRelativePath { get; }
+        string CarsDataRelativePath { get; }
     }
 }
