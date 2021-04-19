@@ -32,6 +32,7 @@ namespace Web.Controllers
         public ActionResult<RentDto> GetRent(Guid rentId)
         {
             var rental = _CarRentService.GetRental(rentId);
+            if (rental == null) return NotFound();
             return new RentDto(rental);
         }
 
@@ -40,6 +41,7 @@ namespace Web.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<RentDto>> GetRentalsOfClient(Guid clientId)
         {
+            // TODO: Return 404 when client of given Guid does not exist
             var rents = new List<RentDto>();
             _CarRentService
                 .GetClientRentals(clientId).ToList()
