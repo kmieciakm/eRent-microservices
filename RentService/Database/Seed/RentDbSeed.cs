@@ -2,6 +2,7 @@
 using Database.Entities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -117,8 +118,8 @@ namespace Database.Seed
                     return new DbRentEntity()
                     {
                         RentGuid = Guid.Parse(rentsFields[0]),
-                        RentalDate = DateTime.Parse(rentsFields[1]),
-                        EndRentalDate = DateTime.Parse(rentsFields[2]),
+                        RentalDate = DateTime.ParseExact(rentsFields[1], "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
+                        EndRentalDate = DateTime.ParseExact(rentsFields[2], "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
                         TotalRentPrice = decimal.Parse(rentsFields[3]),
                         RentedVehicleVin = rentsFields[4],
                         ClientGuid = Guid.Parse(rentsFields[5])

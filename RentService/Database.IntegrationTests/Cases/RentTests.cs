@@ -5,7 +5,7 @@ using Domain.Ports.Infrastructure.Rent;
 using System;
 using Xunit;
 
-namespace Database.IntegrationTests.TestCases
+namespace Database.IntegrationTests.Cases
 {
     public class RentTests
     {
