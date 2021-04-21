@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using Xunit;
 
-namespace Database.IntegrationTests.TestCases
+namespace Database.IntegrationTests.Cases
 {
     public class ClientTests
     {

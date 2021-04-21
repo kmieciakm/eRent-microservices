@@ -5,7 +5,7 @@ using Domain.Ports.Infrastructure.Rent;
 using System;
 using Xunit;
 
-namespace Database.IntegrationTests.TestCases
+namespace Database.IntegrationTests.Cases
 {
     public class RentTests
     {
@@ -37,7 +37,7 @@ namespace Database.IntegrationTests.TestCases
             var rent = new RentEntity(
                 Guid.NewGuid(),
                 new ClientEntity(
-                        Guid.NewGuid(),
+                        Guid.Parse("11111111-1111-1111-1111-111111111111"),
                         "Client firstname",
                         "Client lastname",
                         "client@email.com"

@@ -1,4 +1,4 @@
-﻿using Database.DatabaseContext;
+﻿using Database.Context;
 using Database.Entities;
 using Database.Helpers;
 using Database.Repositories.Contracts;
@@ -28,11 +28,13 @@ namespace Database.Repositories
         public IEnumerable<DbRentEntity> GetByClient(Guid clientGuid)
         {
             return _DbContext.Rents
+                .Include(rent => rent.Client)
                 .Where(rent => rent.ClientGuid.Equals(clientGuid));
         }
 
         public bool CreateAndSave(DbRentEntity rent)
         {
+            rent.Client = null; // REMARKS: Prevent creating another entity of an already existing client.
             _DbContext.Rents.Add(rent);
             return DatabaseUtils.CommitChanges(_DbContext) > 0;
         }

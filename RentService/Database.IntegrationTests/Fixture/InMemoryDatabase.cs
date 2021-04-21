@@ -1,10 +1,10 @@
-﻿using Database.DatabaseContext;
+﻿using Database.Context;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data.Common;
 
-namespace Database.IntegrationTests.TestFixture
+namespace Database.IntegrationTests.Fixture
 {
     class InMemoryDatabase : IDisposable
     {

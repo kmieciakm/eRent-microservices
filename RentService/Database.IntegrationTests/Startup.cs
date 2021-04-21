@@ -1,10 +1,10 @@
 ﻿using Database.Adapters;
-using Database.DatabaseContext;
+using Database.Context;
 using Database.IntegrationTests.Fixture;
-using Database.IntegrationTests.Fixture.Settings;
-using Database.IntegrationTests.TestFixture;
 using Database.Repositories;
 using Database.Repositories.Contracts;
+using Database.Seed;
+using Domain.Ports.Infrastructure.Car;
 using Domain.Ports.Infrastructure.Client;
 using Domain.Ports.Infrastructure.Rent;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +26,7 @@ namespace Database.IntegrationTests
             // Repositories
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IRentRepository, RentRepository>();
+            services.AddScoped<ICarRepository, CarRepository>();
 
             // Database use cases
             services.AddScoped<IClientQuery, ClientAdapter>();
@@ -36,13 +37,17 @@ namespace Database.IntegrationTests
             services.AddScoped<IRentCreator, RentAdapter>();
             services.AddScoped<IRentModify, RentAdapter>();
             services.AddScoped<IRentCancel, RentAdapter>();
+            services.AddScoped<ICarQuery, CarAdapter>();
+            services.AddScoped<ICarCreate, CarAdapter>();
+            services.AddScoped<ICarModify, CarAdapter>();
+            services.AddScoped<ICarDelete, CarAdapter>();
         }
 
         private static RentDbContext SetupDbContext(IServiceProvider serviceProvider)
         {
             var settings = serviceProvider.GetRequiredService<ISeedSettings>();
             var dbContext = new InMemoryDatabase().CreateDbContext();
-            var dbContextSeed = new DatabaseSeed(dbContext, settings);
+            var dbContextSeed = new RentDbSeed(dbContext, settings);
             dbContextSeed.SeedData();
             return dbContext;
         }

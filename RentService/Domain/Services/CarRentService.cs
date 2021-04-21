@@ -29,6 +29,11 @@ namespace Domain.Services
             _CarQuery = carQuery;
         }
 
+        public RentEntity GetRental(Guid rentalGuid)
+        {
+            return _RentQuery.GetRent(rentalGuid);
+        }
+
         public IList<RentEntity> GetClientRentals(Guid clientGuid)
         {
             return _RentQuery.GetRentsOfClient(clientGuid);
