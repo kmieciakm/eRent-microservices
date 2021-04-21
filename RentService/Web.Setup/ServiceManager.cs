@@ -59,6 +59,7 @@ namespace Web.Setup
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<ICarRentService, CarRentService>();
+            services.AddScoped<ICarService, CarService>();
 
             return services;
         }
