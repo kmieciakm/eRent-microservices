@@ -15,7 +15,7 @@ namespace Web.FunctionalTests.Fixture
                 .ConfigureAppConfiguration(configBuilder =>
                 {
                     configBuilder
-                        .AddJsonFile("appsettings.json", optional: false)
+                        .AddJsonFile("appsettings.Testing.json", optional: false)
                         .AddEnvironmentVariables();
                 })
                 .UseEnvironment("Testing")
