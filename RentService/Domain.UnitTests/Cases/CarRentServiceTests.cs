@@ -1,5 +1,6 @@
 ﻿using Domain.DomainModels;
 using Domain.DomainModels.ValueObjects;
+using Domain.Exceptions;
 using Domain.UnitTests.Fixture;
 using Domain.UnitTests.Helpers;
 using System;
@@ -48,6 +49,32 @@ namespace Domain.UnitTests.Cases
             var rental = RentServiceMock.CarRentService.RentCar(clientGuid, carVin, startRentalDate, endRentalDate);
 
             Assert.Equal(expectedRental, rental, new RentValuesComparator());
+        }
+
+        [Fact]
+        public void RentCar_VinIncorrect()
+        {
+            var clientGuid = RentServiceMock.Client.ClientGuid;
+            var carVin = Vin.FromString("11hh111tt11ttt111");
+            var startRentalDate = DateTime.Now.AddHours(1);
+            var endRentalDate = startRentalDate.AddDays(2);
+
+            Assert.Throws<RentException>(() =>
+                RentServiceMock.CarRentService.RentCar(clientGuid, carVin, startRentalDate, endRentalDate)
+            );
+        }
+
+        [Fact]
+        public void RentCar_DateIncorrect()
+        {
+            var clientGuid = RentServiceMock.Client.ClientGuid;
+            var carVin = Vin.FromString("11111111111111111");
+            var startRentalDate = DateTime.Now.AddHours(-2);
+            var endRentalDate = startRentalDate.AddDays(-1);
+
+            Assert.Throws<RentException>(() =>
+                RentServiceMock.CarRentService.RentCar(clientGuid, carVin, startRentalDate, endRentalDate)
+            );
         }
     }
 }
