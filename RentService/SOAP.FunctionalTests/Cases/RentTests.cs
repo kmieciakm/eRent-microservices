@@ -1,25 +1,16 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using SOAP.FunctionalTests.Fixture;
-using SOAP.Services;
+﻿using SOAP.FunctionalTests.Fixture;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace SOAP.FunctionalTests.Cases
 {
-    public class PingTests : BaseTestFixture
+    public class RentTests : BaseTestFixture
     {
-        [Fact]
-        public void Init_Test()
-        {
-            Assert.True(true);
-        }
-
         [Fact]
         public void CreateServer_Check()
         {
@@ -29,16 +20,18 @@ namespace SOAP.FunctionalTests.Cases
             }
         }
 
-        [Fact]
-        public async Task Ping_Correct()
+        [Theory]
+        [InlineData("11111111-1111-1111-1111-111111111111")]
+        [InlineData("22222222-2222-2222-2222-222222222222")]
+        public async Task Get_Rents_Ok(Guid rentGuid)
         {
             using (var server = CreateServer())
             {
-                var url = Services.PingServiceUrl;
-                var action = "Ping";
+                var url = Services.RentServiceUrl;
+                var action = "GetRentalsOfClient";
                 var parameters = new Dictionary<string, string>()
                 {
-                    { "msg", "test" }
+                    { "clientId", rentGuid.ToString() }
                 };
 
                 string envelope = SoapHelper.GetEnvelope(action, parameters);

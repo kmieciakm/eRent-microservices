@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SOAP.Services
 {
-    public class PingService : IPingService
+    public class PingSOAPService : IPingSOAPService
     {
         public string Ping(string msg)
         {

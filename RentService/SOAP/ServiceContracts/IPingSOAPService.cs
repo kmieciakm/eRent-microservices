@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SOAP.ServiceContracts
 {
     [ServiceContract]
-    public interface IPingService
+    public interface IPingSOAPService
     {
         [OperationContract]
         string Ping(string msg);
