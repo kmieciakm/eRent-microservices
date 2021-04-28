@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Domain.Services.Contracts
 {
-    interface ITokenService
+    public interface ITokenService
     {
         string GenerateSecurityToken(SignInRequest request);
     }

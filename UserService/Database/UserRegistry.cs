@@ -55,8 +55,8 @@ namespace Database
 
         public async Task<bool> AuthenticateAsync(string email, string password)
         {
-            var signInResult = await _SignInManager
-                .PasswordSignInAsync(email, password, false, false);
+            var user = await GetDbUserByEmailAsync(email);
+            var signInResult = await _SignInManager.PasswordSignInAsync(user, password, false, false);
 
             return signInResult.Succeeded;
         }

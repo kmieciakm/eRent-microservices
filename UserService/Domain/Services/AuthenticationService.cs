@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Services
 {
-    class AuthenticationService : IAuthenticationService
+    public class AuthenticationService : IAuthenticationService
     {
         private IUserRegistry _UserRepository { get; }
         private ITokenService _TokenService { get; }

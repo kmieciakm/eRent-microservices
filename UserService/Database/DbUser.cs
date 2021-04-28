@@ -16,6 +16,7 @@ namespace Domain.Models
         {
             Name = name;
             Email = email;
+            UserName = Email;
         }
 
         public User ToDomainUser()

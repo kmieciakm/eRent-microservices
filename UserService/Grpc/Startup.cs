@@ -1,27 +1,23 @@
-using Database;
+﻿using Database;
 using Domain.Infrastructure;
 using Domain.Models;
 using Domain.Services;
 using Domain.Services.Contracts;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Grpc.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Web
+namespace Grpc
 {
     public class Startup
     {
@@ -34,9 +30,8 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-
-            AddTokenAuthentication(services, Configuration);
+            services.AddGrpc();
+            services.AddGrpcReflection();
 
             // Database setup
             services
@@ -56,49 +51,34 @@ namespace Web
             services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            // Seed database
+            serviceProvider
+                .GetRequiredService<UserContext>()
+                .Seed();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
-            });
-        }
+                endpoints.MapGrpcService<GrpcAuthenticationService>();
 
-        public static IServiceCollection AddTokenAuthentication(IServiceCollection services, IConfiguration configuration)
-        {
-            var settingsSection = configuration.GetSection("AuthenticationSettings");
-            var settings = settingsSection.Get<AuthenticationSettings>();
-            var key = Encoding.ASCII.GetBytes(settings.Secret);
-         
-            services
-                .Configure<AuthenticationSettings>(settingsSection)
-                .AddAuthentication(authOptions =>
+                if (env.IsDevelopment())
                 {
-                    authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(authOptions =>
+                    endpoints.MapGrpcReflectionService();
+                }
+
+                endpoints.MapGet("/", async context =>
                 {
-                    authOptions.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
+                    await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
                 });
-            return services;
+            });
         }
     }
 }
