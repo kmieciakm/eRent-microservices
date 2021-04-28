@@ -20,7 +20,7 @@ namespace Database
             _UserManager = userManager;
         }
 
-        public async Task<User> GetByIdAsync(Guid id)
+        public async Task<User> GetAsync(Guid id)
         {
             var dbUser = await _UserManager
                 .Users
@@ -29,13 +29,28 @@ namespace Database
             return dbUser.ToDomainUser();
         }
 
-        public async Task<User> GetByEmailAsync(string email)
+        public async Task<User> GetAsync(string email)
         {
             var dbUser = await _UserManager
                 .Users
                 .FirstOrDefaultAsync(user => user.Email == email);
 
             return dbUser.ToDomainUser();
+        }
+
+        private async Task<DbUser> GetDbUserByEmailAsync(string email)
+        {
+            return await _UserManager
+                .Users
+                .FirstOrDefaultAsync(user => user.Email == email);
+        }
+
+        public async Task<bool> CreateAsync(User user, string password)
+        {
+            var dbUser = await GetDbUserByEmailAsync(user.Email);
+            var result = await _UserManager.CreateAsync(dbUser, password);
+
+            return result.Succeeded;
         }
 
         public async Task<bool> AuthenticateAsync(string email, string password)
@@ -46,12 +61,20 @@ namespace Database
             return signInResult.Succeeded;
         }
 
-        public async Task<bool> CreateAsync(User user, string password)
+        public async Task<string> GenerateAccountConfirmationTokenAsync(User user)
         {
-            var dbUser = new DbUser(user.Name, user.Email);
-            var result = await _UserManager.CreateAsync(dbUser, password);
+            var dbUser = await GetDbUserByEmailAsync(user.Email);
+            var confirmationToken = await _UserManager.GenerateEmailConfirmationTokenAsync(dbUser);
 
-            return result.Succeeded;
+            return confirmationToken;
+        }
+
+        public async Task<bool> ConfirmationAccountAsync(User user, string confirmationToken)
+        {
+            var dbUser = await GetDbUserByEmailAsync(user.Email);
+            var confirmationResult = await _UserManager.ConfirmEmailAsync(dbUser, confirmationToken);
+
+            return confirmationResult.Succeeded;
         }
     }
 }

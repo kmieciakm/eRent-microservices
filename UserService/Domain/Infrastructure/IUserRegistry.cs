@@ -8,9 +8,11 @@ namespace Domain.Infrastructure
 {
     public interface IUserRegistry
     {
-        Task<User> GetByIdAsync(Guid id);
-        Task<User> GetByEmailAsync(string email);
-        Task<bool> AuthenticateAsync(string email, string password);
+        Task<User> GetAsync(Guid id);
+        Task<User> GetAsync(string email);
         Task<bool> CreateAsync(User user, string password);
+        Task<bool> AuthenticateAsync(string email, string password);
+        Task<string> GenerateAccountConfirmationTokenAsync(User user);
+        Task<bool> ConfirmationAccountAsync(User user, string confirmationToken);
     }
 }

@@ -7,6 +7,6 @@ namespace Domain.Models
     public class AuthenticationSettings
     {
         public string Secret { get; set; }
-        public int ExpirationDays { get; set; }
+        public int ExpirationHours { get; set; }
     }
 }
