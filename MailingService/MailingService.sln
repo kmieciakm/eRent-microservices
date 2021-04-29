@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31105.61
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{F9EAF650-D6B4-4C3B-9FF4-72389EF141E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMailApp", "TestMailApp\TestMailApp.csproj", "{B318CE39-92DC-4060-A54D-5741748ADEB6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F9EAF650-D6B4-4C3B-9FF4-72389EF141E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9EAF650-D6B4-4C3B-9FF4-72389EF141E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9EAF650-D6B4-4C3B-9FF4-72389EF141E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9EAF650-D6B4-4C3B-9FF4-72389EF141E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B318CE39-92DC-4060-A54D-5741748ADEB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B318CE39-92DC-4060-A54D-5741748ADEB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B318CE39-92DC-4060-A54D-5741748ADEB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B318CE39-92DC-4060-A54D-5741748ADEB6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {95E26746-E482-43C8-9809-031163526BE6}
+	EndGlobalSection
+EndGlobal
