@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace Domain.Settings
@@ -19,7 +20,7 @@ namespace Domain.Settings
         {
             get
             {
-                var currentDirectory = Directory.GetCurrentDirectory();
+                var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location); ;
                 return Path.Combine(currentDirectory, "EmailTemplates");
             }
         }

@@ -3,6 +3,7 @@ using Domain.Services.Contracts;
 using Domain.Settings;
 using FluentEmail.Core;
 using FluentEmail.Smtp;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +19,10 @@ namespace Domain.Services
         private SmtpSender _Sender { get; set; }
         private TemplatesSettings _TemplatesSettings { get; }
         private SmtpSettings _SmtpSettings { get; }
+
+        public MailSender(IOptions<TemplatesSettings> templatesSettings, IOptions<SmtpSettings> smtpSettings)
+            : this(templatesSettings.Value, smtpSettings.Value) { }
+
         public MailSender(TemplatesSettings templatesSettings, SmtpSettings smtpSettings)
         {
             _SmtpSettings = smtpSettings;
@@ -36,49 +41,35 @@ namespace Domain.Services
 
         public async Task SendConfirmationEmailAsync(string from, string to, string subject, string token)
         {
-            try
-            {
-                var templatePath = _TemplatesSettings.ConfirmationFilePath;
-                var template = File.ReadAllText(templatePath);
-                var body = string.Format(template, token);
+            var templatePath = _TemplatesSettings.ConfirmationFilePath;
+            var template = File.ReadAllText(templatePath);
+            var body = string.Format(template, token);
 
-                var sendResponse = await Email
-                    .From(from)
-                    .To(to)
-                    .Subject(subject)
-                    .Body(body, true)
-                    .SendAsync();
+            var sendResponse = await Email
+                .From(from)
+                .To(to)
+                .Subject(subject)
+                .Body(body, true)
+                .SendAsync();
 
-                if (!sendResponse.Successful)
-                {
-                    throw new EmailException("Email was not send successfully", from, to);
-                }
-            }
-            catch (Exception exception)
+            if (!sendResponse.Successful)
             {
-                throw new EmailException("Email sender encountered unexpected error", exception, from, to);
+                throw new EmailException("Email was not send successfully", from, to);
             }
         }
 
         public async Task SendEmailAsync(string from, string to, string subject, XDocument html)
         {
-            try
-            {
-                var sendResponse = await Email
-                    .From(from)
-                    .To(to)
-                    .Subject(subject)
-                    .Body(html.ToString(), true)
-                    .SendAsync();
+            var sendResponse = await Email
+                .From(from)
+                .To(to)
+                .Subject(subject)
+                .Body(html.ToString(), true)
+                .SendAsync();
 
-                if (!sendResponse.Successful)
-                {
-                    throw new EmailException("Email was not send successfully", from, to);
-                }
-            }
-            catch (Exception exception)
+            if (!sendResponse.Successful)
             {
-                throw new EmailException("Email sender encountered unexpected error", exception, from, to);
+                throw new EmailException("Email was not send successfully", from, to);
             }
         }
     }
