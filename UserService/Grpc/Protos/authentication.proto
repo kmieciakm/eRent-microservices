@@ -6,6 +6,7 @@ package authentication;
 
 service Authentication {
   rpc SignIn (GrpcSignInRequest) returns (GrpcSignInReply);
+  rpc SignUp (GrpcSignUpRequest) returns (GrpcSignUpReply);
 }
 
 message GrpcSignInRequest {
@@ -15,4 +16,16 @@ message GrpcSignInRequest {
 
 message GrpcSignInReply {
   string token = 1;
+}
+
+message GrpcSignUpRequest {
+  string name = 1;
+  string email = 2;
+  string password = 3;
+  string passwordConfirmation = 4;
+}
+
+message GrpcSignUpReply {
+  string name = 1;
+  string email = 2;
 }

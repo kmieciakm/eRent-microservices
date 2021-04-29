@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Domain.Models
+namespace Database.Models
 {
     public class DbUser : IdentityUser
     {
@@ -19,12 +20,19 @@ namespace Domain.Models
             UserName = Email;
         }
 
+        public DbUser(User user) : base()
+        {
+            Name = user.Name;
+            Email = user.Email;
+            UserName = Email;
+        }
+
         public User ToDomainUser()
         {
             return new User()
             {
-                Name = this.Name,
-                Email = this.Email
+                Name = Name,
+                Email = Email
             };
         }
     }

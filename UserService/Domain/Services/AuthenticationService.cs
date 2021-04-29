@@ -23,23 +23,18 @@ namespace Domain.Services
 
         public async Task<string> SignInAsync(SignInRequest signInRequest)
         {
-            try
-            {
-                var authenticated = await _UserRepository
-                    .AuthenticateAsync(signInRequest.Email, signInRequest.Password);
+            // TODO: Check if user confirmed account
 
-                if (authenticated)
-                {
-                    return _TokenService.GenerateSecurityToken(signInRequest);
-                }
-                else
-                {
-                    throw new AuthenticationException("The email or password is incorrect.");
-                }
-            }
-            catch (Exception ex)
+            var authenticated = await _UserRepository
+                .AuthenticateAsync(signInRequest.Email, signInRequest.Password);
+
+            if (authenticated)
             {
-                throw new AuthenticationException("Login failed, check inner exception for more details.", ex);
+                return _TokenService.GenerateSecurityToken(signInRequest.Email);
+            }
+            else
+            {
+                throw new AuthenticationException("The email or password is incorrect.");
             }
         }
 
@@ -50,24 +45,28 @@ namespace Domain.Services
                 throw new RegistrationException("Cannot register new user. Given Password and Confirmation password does not match.");
             }
 
+            // TODO: Check if email is not used
+
             var signUpUser = new User()
             {
                 Name = signUpRequest.Name,
                 Email = signUpRequest.Email
             };
 
-            try
+            // TODO: Validate password policy
+
+            var createdSuccessfully = await _UserRepository.CreateAsync(signUpUser, signUpRequest.Password);
+            if (createdSuccessfully)
             {
-                var createdSuccessfully = await _UserRepository.CreateAsync(signUpUser, signUpRequest.Password);
                 var createdUser = await _UserRepository.GetAsync(signUpRequest.Email);
                 var accountConfirmationToken = _UserRepository.GenerateAccountConfirmationTokenAsync(createdUser);
                 // TODO: Send confirmation email
 
                 return createdUser;
             }
-            catch (Exception ex)
+            else
             {
-                throw new RegistrationException("Registration failed, check inner exception for more details.", ex);
+                throw new RegistrationException("User registration failed.");
             }
         }
 

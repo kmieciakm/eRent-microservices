@@ -1,4 +1,5 @@
-﻿using Domain.Infrastructure;
+﻿using Database.Models;
+using Domain.Infrastructure;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ namespace Database
                 .Users
                 .FirstOrDefaultAsync(user => user.Id == id.ToString());
 
-            return dbUser.ToDomainUser();
+            return dbUser?.ToDomainUser();
         }
 
         public async Task<User> GetAsync(string email)
@@ -35,7 +36,7 @@ namespace Database
                 .Users
                 .FirstOrDefaultAsync(user => user.Email == email);
 
-            return dbUser.ToDomainUser();
+            return dbUser?.ToDomainUser();
         }
 
         private async Task<DbUser> GetDbUserByEmailAsync(string email)
@@ -47,7 +48,7 @@ namespace Database
 
         public async Task<bool> CreateAsync(User user, string password)
         {
-            var dbUser = await GetDbUserByEmailAsync(user.Email);
+            var dbUser = new DbUser(user);
             var result = await _UserManager.CreateAsync(dbUser, password);
 
             return result.Succeeded;

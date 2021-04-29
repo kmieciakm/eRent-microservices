@@ -1,4 +1,5 @@
-﻿using Domain.Models.Requests;
+﻿using Domain;
+using Domain.Models.Requests;
 using Domain.Services.Contracts;
 using Grpc.Core;
 using Grpc.Protos;
@@ -43,11 +44,45 @@ namespace Grpc.Services
             catch (AuthenticationException authenticationEx)
             {
                 _Logger.LogInformation(authenticationEx, authenticationEx.Message);
-                throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid authentication credentials."));
+                throw new RpcException(new Status(StatusCode.InvalidArgument, authenticationEx.Message));
             }
             catch (Exception ex)
             {
                 var message = "Unexpected error during login.";
+                _Logger.LogError(ex, message);
+                throw new RpcException(new Status(StatusCode.Internal, message));
+            }
+        }
+
+        public override async Task<GrpcSignUpReply> SignUp(GrpcSignUpRequest request, ServerCallContext context)
+        {
+            try
+            {
+                var signUpRequest = new SignUpRequest()
+                {
+                    Name = request.Name,
+                    Email = request.Email,
+                    Password = request.Password,
+                    ConfirmationPassword = request.PasswordConfirmation
+                };
+
+                var createdUser = await _AuthenticationService
+                    .SignUpAsync(signUpRequest);
+
+                return new GrpcSignUpReply()
+                {
+                    Name = createdUser.Name,
+                    Email = createdUser.Email
+                };
+            }
+            catch (RegistrationException registrationEx)
+            {
+                _Logger.LogInformation(registrationEx, registrationEx.Message);
+                throw new RpcException(new Status(StatusCode.InvalidArgument, registrationEx.Message));
+            }
+            catch (Exception ex)
+            {
+                var message = "Unexpected error during registration.";
                 _Logger.LogError(ex, message);
                 throw new RpcException(new Status(StatusCode.Internal, message));
             }

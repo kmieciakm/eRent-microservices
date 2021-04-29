@@ -7,6 +7,6 @@ namespace Domain.Services.Contracts
 {
     public interface ITokenService
     {
-        string GenerateSecurityToken(SignInRequest request);
+        string GenerateSecurityToken(string email);
     }
 }

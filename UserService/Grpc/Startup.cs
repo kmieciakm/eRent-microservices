@@ -1,8 +1,11 @@
 ﻿using Database;
+using Database.Context;
+using Database.Models;
 using Domain.Infrastructure;
 using Domain.Models;
 using Domain.Services;
 using Domain.Services.Contracts;
+using Grpc.Helpers;
 using Grpc.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,7 +39,10 @@ namespace Grpc
             // Database setup
             services
                 .AddDbContext<UserContext>(options => options.UseInMemoryDatabase("InMemoryUserDatabase"))
-                .AddIdentity<DbUser, IdentityRole>()
+                .AddIdentity<DbUser, IdentityRole>(config =>
+                {
+                    config.SignIn.RequireConfirmedEmail = false;
+                })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<UserContext>();
 
@@ -56,14 +62,10 @@ namespace Grpc
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                serviceProvider.SeedDatabase();
             }
 
             app.UseRouting();
-
-            // Seed database
-            serviceProvider
-                .GetRequiredService<UserContext>()
-                .Seed();
 
             app.UseEndpoints(endpoints =>
             {
@@ -73,11 +75,6 @@ namespace Grpc
                 {
                     endpoints.MapGrpcReflectionService();
                 }
-
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
-                });
             });
         }
     }

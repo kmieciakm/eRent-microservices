@@ -20,7 +20,7 @@ namespace Domain.Services
             _AuthenticationSettings = authenticationSettings.Value;
         }
 
-        public string GenerateSecurityToken(SignInRequest request)
+        public string GenerateSecurityToken(string email)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_AuthenticationSettings.Secret);
@@ -29,7 +29,7 @@ namespace Domain.Services
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Email, request.Email)
+                    new Claim(ClaimTypes.Email, email)
                 }),
                 Expires = DateTime.UtcNow.AddHours(_AuthenticationSettings.ExpirationHours),
                 SigningCredentials = new SigningCredentials(
