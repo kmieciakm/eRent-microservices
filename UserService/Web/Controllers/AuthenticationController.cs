@@ -20,6 +20,7 @@ namespace Web.Controllers
     {
         private ILogger<AuthenticationController> _Logger { get; }
         private IAuthenticationService _AuthenticationService { get; }
+
         public AuthenticationController(ILogger<AuthenticationController> logger, IAuthenticationService authenticationService)
         {
             _Logger = logger;

@@ -75,12 +75,12 @@ namespace Domain.Services
             }
         }
 
-        public void ConfirmAccountAsync(ConfirmAccount confirmation)
+        public async Task ConfirmAccountAsync(ConfirmAccount confirmAccount)
         {
             try
             {
-                var confirmationResult = _UserRepository
-                    .ConfirmationAccountAsync(confirmation.User, confirmation.ConfirmationToken);
+                var confirmationResult = await _UserRepository
+                    .ConfirmationAccountAsync(confirmAccount.User, confirmAccount.ConfirmationToken);
             }
             catch (Exception ex)
             {

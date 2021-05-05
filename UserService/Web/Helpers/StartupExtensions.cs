@@ -18,7 +18,8 @@ namespace Web.Helpers
                 .AddDbContext<UserContext>(options => options.UseInMemoryDatabase("InMemoryUserDatabase"))
                 .AddIdentity<DbUser, IdentityRole>()
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<UserContext>();
+                .AddEntityFrameworkStores<UserContext>()
+                .AddTokenProvider<DataProtectorTokenProvider<DbUser>>(TokenOptions.DefaultProvider);
 
             return services;
         }

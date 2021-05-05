@@ -11,6 +11,6 @@ namespace Domain.Services.Contracts
         Task<User> GetIdentity(string email);
         Task<string> SignInAsync(SignIn signIn);
         Task<User> SignUpAsync(SignUp signUp);
-        void ConfirmAccountAsync(ConfirmAccount confirmation);
+        Task ConfirmAccountAsync(ConfirmAccount confirmation);
     }
 }
