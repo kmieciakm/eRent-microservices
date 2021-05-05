@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Models.Requests
+namespace Domain.Models
 {
-    public class ConfirmAccountRequest
+    public class ConfirmAccount
     {
         public User User { get; set; }
         public string ConfirmationToken { get; set; }

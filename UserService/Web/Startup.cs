@@ -1,6 +1,4 @@
 using Database;
-using Database.Context;
-using Database.Models;
 using Domain.Infrastructure;
 using Domain.Models;
 using Domain.Services;
@@ -9,19 +7,19 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Web.Helpers;
 
 namespace Web
 {
@@ -38,14 +36,13 @@ namespace Web
         {
             services.AddControllers();
 
-            AddTokenAuthentication(services, Configuration);
+            services.AddSwaggerGen(config =>
+            {
+                config.SwaggerDoc("v1", new OpenApiInfo { Title = "Authentication Service", Version = "v1" });
+            });
 
             // Database setup
-            services
-                .AddDbContext<UserContext>(options => options.UseInMemoryDatabase("InMemoryUserDatabase"))
-                .AddIdentity<DbUser, IdentityRole>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<UserContext>();
+            services.AddInMemoryDatabase();
 
             // Repositories
             services.AddScoped<IUserRegistry, UserRegistry>();
@@ -58,11 +55,18 @@ namespace Web
             services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                serviceProvider.SeedDatabase();
+
+                app.UseSwagger();
+                app.UseSwaggerUI(c => {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Authentication Service v1");
+                    c.RoutePrefix = "docs";
+                });
             }
 
             app.UseHttpsRedirection();

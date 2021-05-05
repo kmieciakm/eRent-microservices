@@ -1,5 +1,5 @@
-﻿using Domain;
-using Domain.Models.Requests;
+﻿using Domain.Exceptions;
+using Domain.Models;
 using Domain.Services.Contracts;
 using Grpc.Core;
 using Grpc.Protos;
@@ -27,21 +27,21 @@ namespace Grpc.Services
         {
             try
             {
-                var signInRequest = new SignInRequest()
+                var signIn = new SignIn()
                 {
                     Email = request.Email,
                     Password = request.Password
                 };
 
                 var securityToken = await _AuthenticationService
-                    .SignInAsync(signInRequest);
+                    .SignInAsync(signIn);
 
                 return new GrpcSignInReply()
                 {
                     Token = securityToken
                 };
             }
-            catch (AuthenticationException authenticationEx)
+            catch (Domain.Exceptions.AuthenticationException authenticationEx)
             {
                 _Logger.LogInformation(authenticationEx, authenticationEx.Message);
                 throw new RpcException(new Status(StatusCode.InvalidArgument, authenticationEx.Message));
@@ -58,7 +58,7 @@ namespace Grpc.Services
         {
             try
             {
-                var signUpRequest = new SignUpRequest()
+                var signUp = new SignUp()
                 {
                     Name = request.Name,
                     Email = request.Email,
@@ -67,7 +67,7 @@ namespace Grpc.Services
                 };
 
                 var createdUser = await _AuthenticationService
-                    .SignUpAsync(signUpRequest);
+                    .SignUpAsync(signUp);
 
                 return new GrpcSignUpReply()
                 {

@@ -3,20 +3,26 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Domain
+namespace Domain.Exceptions
 {
     public class RegistrationException : Exception
     {
+        public ExceptionCause Cause { get; }
+
         public RegistrationException()
         {
         }
 
-        public RegistrationException(string message) : base(message)
+        public RegistrationException(string message, ExceptionCause cause = ExceptionCause.Unknown)
+            : base(message)
         {
+            Cause = cause;
         }
 
-        public RegistrationException(string message, Exception innerException) : base(message, innerException)
+        public RegistrationException(string message, Exception innerException, ExceptionCause cause = ExceptionCause.Unknown)
+            : base(message, innerException)
         {
+            Cause = cause;
         }
     }
 }

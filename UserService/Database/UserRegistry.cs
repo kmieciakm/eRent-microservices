@@ -32,10 +32,7 @@ namespace Database
 
         public async Task<User> GetAsync(string email)
         {
-            var dbUser = await _UserManager
-                .Users
-                .FirstOrDefaultAsync(user => user.Email == email);
-
+            var dbUser = await GetDbUserByEmailAsync(email);
             return dbUser?.ToDomainUser();
         }
 

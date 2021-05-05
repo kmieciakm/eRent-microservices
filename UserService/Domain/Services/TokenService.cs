@@ -1,5 +1,4 @@
 ﻿using Domain.Models;
-using Domain.Models.Requests;
 using Domain.Services.Contracts;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

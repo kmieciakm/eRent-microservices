@@ -1,5 +1,4 @@
 ﻿using Domain.Models;
-using Domain.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,8 +8,9 @@ namespace Domain.Services.Contracts
 {
     public interface IAuthenticationService
     {
-        Task<string> SignInAsync(SignInRequest signInRequest);
-        Task<User> SignUpAsync(SignUpRequest signUpRequest);
-        void ConfirmAccountAsync(ConfirmAccountRequest confirmationRequest);
+        Task<User> GetIdentity(string email);
+        Task<string> SignInAsync(SignIn signIn);
+        Task<User> SignUpAsync(SignUp signUp);
+        void ConfirmAccountAsync(ConfirmAccount confirmation);
     }
 }
