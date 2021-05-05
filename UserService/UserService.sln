@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grpc", "Grpc\Grpc.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grpc.Tests", "Grpc.Tests\Grpc.Tests.csproj", "{1FAAF7E7-172F-4311-9EF7-1E8526C92006}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mailing", "Mailing\Mailing.csproj", "{F9E5F70E-08AE-452C-8731-1BFCD80557F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{1FAAF7E7-172F-4311-9EF7-1E8526C92006}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FAAF7E7-172F-4311-9EF7-1E8526C92006}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FAAF7E7-172F-4311-9EF7-1E8526C92006}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9E5F70E-08AE-452C-8731-1BFCD80557F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9E5F70E-08AE-452C-8731-1BFCD80557F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9E5F70E-08AE-452C-8731-1BFCD80557F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9E5F70E-08AE-452C-8731-1BFCD80557F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

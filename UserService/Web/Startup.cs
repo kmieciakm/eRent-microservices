@@ -3,6 +3,7 @@ using Domain.Infrastructure;
 using Domain.Models;
 using Domain.Services;
 using Domain.Services.Contracts;
+using Mailing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -49,9 +50,11 @@ namespace Web
 
             // Settings
             services.Configure<AuthenticationSettings>(Configuration.GetSection("AuthenticationSettings"));
+            services.Configure<MailingSettings>(Configuration.GetSection("MailingSettings"));
 
             // Domain services
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IMailSender, ConsoleMailSender>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
 

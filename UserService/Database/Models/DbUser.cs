@@ -24,6 +24,7 @@ namespace Database.Models
         {
             Name = user.Name;
             Email = user.Email;
+            EmailConfirmed = user.AccountConfirmed;
             UserName = Email;
         }
 
@@ -32,7 +33,8 @@ namespace Database.Models
             return new User()
             {
                 Name = Name,
-                Email = Email
+                Email = Email,
+                AccountConfirmed = EmailConfirmed
             };
         }
     }

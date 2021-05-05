@@ -8,5 +8,6 @@ namespace Domain.Models
     {
         public string Name { get; set; }
         public string Email { get; set; }
+        public bool AccountConfirmed { get; set; }
     }
 }

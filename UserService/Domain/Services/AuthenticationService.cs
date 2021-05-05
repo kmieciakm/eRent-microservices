@@ -13,11 +13,13 @@ namespace Domain.Services
     {
         private IUserRegistry _UserRepository { get; }
         private ITokenService _TokenService { get; }
+        private IMailSender _MailSender { get; }
 
-        public AuthenticationService(IUserRegistry userRepository, ITokenService tokenService)
+        public AuthenticationService(IUserRegistry userRepository, ITokenService tokenService, IMailSender mailSender)
         {
             _UserRepository = userRepository;
             _TokenService = tokenService;
+            _MailSender = mailSender;
         }
 
         public Task<User> GetIdentity(string email)
@@ -55,7 +57,8 @@ namespace Domain.Services
             var signUpUser = new User()
             {
                 Name = signUp.Name,
-                Email = signUp.Email
+                Email = signUp.Email,
+                AccountConfirmed = false
             };
 
             // TODO: Validate password policy
@@ -64,8 +67,8 @@ namespace Domain.Services
             if (createdSuccessfully)
             {
                 var createdUser = await _UserRepository.GetAsync(signUp.Email);
-                var accountConfirmationToken = _UserRepository.GenerateAccountConfirmationTokenAsync(createdUser);
-                // TODO: Send confirmation email
+                var accountConfirmationToken = await _UserRepository.GenerateAccountConfirmationTokenAsync(createdUser);
+                _MailSender.SendConfirmationEmail(createdUser.Email, accountConfirmationToken);
 
                 return createdUser;
             }
@@ -81,6 +84,11 @@ namespace Domain.Services
             {
                 var confirmationResult = await _UserRepository
                     .ConfirmationAccountAsync(confirmAccount.User, confirmAccount.ConfirmationToken);
+
+                if (!confirmationResult)
+                {
+                    throw new AuthenticationException("Invalid token.");
+                }
             }
             catch (Exception ex)
             {
