@@ -54,16 +54,17 @@ namespace Domain.Services
 
             // TODO: Check if email is not used
 
-            var signUpUser = new User()
-            {
-                Name = signUp.Name,
-                Email = signUp.Email,
-                AccountConfirmed = false
-            };
+            var signUpUser = new User(
+                Guid.NewGuid(),
+                signUp.Firstname,
+                signUp.Lastname,
+                signUp.Email
+            );
 
             // TODO: Validate password policy
 
             var createdSuccessfully = await _UserRepository.CreateAsync(signUpUser, signUp.Password);
+            //TODO: Create user in other services
             if (createdSuccessfully)
             {
                 var createdUser = await _UserRepository.GetAsync(signUp.Email);

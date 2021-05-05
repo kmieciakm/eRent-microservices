@@ -60,7 +60,8 @@ namespace Grpc.Services
             {
                 var signUp = new SignUp()
                 {
-                    Name = request.Name,
+                    Firstname = request.Firstname,
+                    Lastname = request.Lastname,
                     Email = request.Email,
                     Password = request.Password,
                     ConfirmationPassword = request.PasswordConfirmation
@@ -71,7 +72,8 @@ namespace Grpc.Services
 
                 return new GrpcSignUpReply()
                 {
-                    Name = createdUser.Name,
+                    Firstname = createdUser.Firstname,
+                    Lastname = createdUser.Lastname,
                     Email = createdUser.Email
                 };
             }
