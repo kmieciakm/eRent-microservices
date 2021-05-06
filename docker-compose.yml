@@ -13,10 +13,19 @@ services:
         ports:
             - 80:80
             - 443:443
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Development
-            - ASPNETCORE_URLS=https://+:443;http://+:80
-            - ASPNETCORE_Kestrel__Certificates__Default__Password=dev
-            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
-        volumes:
-            - ~/.aspnet/https:/https:ro
+    userapi:
+        image: userservice
+        build:
+            context: .
+            dockerfile: UserService\Web\Dockerfile
+        ports:
+            - 44450:80
+            - 44451:443
+    mailapi:
+        image: mailingservice
+        build:
+            context: .
+            dockerfile: MailingService\Web\Dockerfile
+        ports:
+            - 44460:80
+            - 44461:443
