@@ -16,7 +16,7 @@ namespace Database.Context
 
         public void Seed()
         {
-            var user = new DbUser("TestUser", "test@localhost.com");
+            var user = new DbUser("TestUser", "Test", "test@localhost.com");
             user.PasswordHash = new PasswordHasher<DbUser>().HashPassword(user, "QWERTY");
 
             _Context.Users.Add(user);

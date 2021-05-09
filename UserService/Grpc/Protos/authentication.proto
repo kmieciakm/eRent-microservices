@@ -19,13 +19,15 @@ message GrpcSignInReply {
 }
 
 message GrpcSignUpRequest {
-  string name = 1;
-  string email = 2;
-  string password = 3;
-  string passwordConfirmation = 4;
+  string firstname = 1;
+  string lastname = 2;
+  string email = 3;
+  string password = 4;
+  string passwordConfirmation = 5;
 }
 
 message GrpcSignUpReply {
-  string name = 1;
-  string email = 2;
+  string firstname = 1;
+  string lastname = 2;
+  string email = 3;
 }

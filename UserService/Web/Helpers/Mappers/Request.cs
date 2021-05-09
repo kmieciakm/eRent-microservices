@@ -24,7 +24,8 @@ namespace Web.Helpers.Mappers
             {
                 return new SignUp()
                 {
-                    Name = signUpRequest.Name,
+                    Firstname = signUpRequest.Firstname,
+                    Lastname = signUpRequest.Lastname,
                     Email = signUpRequest.Email,
                     Password = signUpRequest.Password,
                     ConfirmationPassword = signUpRequest.ConfirmationPassword

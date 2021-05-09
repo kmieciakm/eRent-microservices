@@ -11,18 +11,21 @@ namespace Database.Models
     {
         [Required]
         [MaxLength(200)]
-        public string Name { get; set; }
+        public string Firstname { get; set; }
+        public string Lastname { get; set; }
 
-        public DbUser(string name, string email) : base()
+        public DbUser(string firstname, string lastname, string email) : base()
         {
-            Name = name;
+            Firstname = firstname;
+            Lastname = lastname;
             Email = email;
             UserName = Email;
         }
 
         public DbUser(User user) : base()
         {
-            Name = user.Name;
+            Firstname = user.Firstname;
+            Lastname = user.Lastname;
             Email = user.Email;
             EmailConfirmed = user.AccountConfirmed;
             UserName = Email;
@@ -30,12 +33,13 @@ namespace Database.Models
 
         public User ToDomainUser()
         {
-            return new User()
-            {
-                Name = Name,
-                Email = Email,
-                AccountConfirmed = EmailConfirmed
-            };
+            return new User(
+                Guid.Parse(Id),
+                Firstname,
+                Lastname,
+                Email,
+                EmailConfirmed
+            );
         }
     }
 }

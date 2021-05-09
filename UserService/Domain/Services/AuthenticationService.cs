@@ -81,14 +81,15 @@ namespace Domain.Services
                         ExceptionCause.IncorrectInputData);
             }
 
-            var signUpUser = new User()
-            {
-                Name = signUp.Name,
-                Email = signUp.Email,
-                AccountConfirmed = false
-            };
+            var signUpUser = new User(
+                Guid.NewGuid(),
+                signUp.Firstname,
+                signUp.Lastname,
+                signUp.Email
+            );
 
             var createdSuccessfully = await _UserRepository.CreateAsync(signUpUser, signUp.Password);
+            //TODO: Create user in other services
             if (createdSuccessfully)
             {
                 var createdUser = await _UserRepository.GetAsync(signUp.Email);
