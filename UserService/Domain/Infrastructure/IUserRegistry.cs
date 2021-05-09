@@ -12,6 +12,7 @@ namespace Domain.Infrastructure
         Task<User> GetAsync(string email);
         Task<bool> CreateAsync(User user, string password);
         Task<bool> AuthenticateAsync(string email, string password);
+        Task<ValidationResult> ValidatePasswordAsync(string password);
         Task<string> GenerateAccountConfirmationTokenAsync(User user);
         Task<bool> ConfirmationAccountAsync(User user, string confirmationToken);
     }

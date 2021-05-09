@@ -29,22 +29,42 @@ namespace Domain.Services
 
         public async Task<string> SignInAsync(SignIn signIn)
         {
-            // TODO: Check if user confirmed account
             var authenticated = await _UserRepository
                 .AuthenticateAsync(signIn.Email, signIn.Password);
 
             if (authenticated)
             {
+                var user = await _UserRepository.GetAsync(signIn.Email);
+                if (!user.AccountConfirmed)
+                {
+                    throw new AuthenticationException("Account is not confirmed.", ExceptionCause.IncorrectInputData);
+                }
+
                 return _TokenService.GenerateSecurityToken(signIn.Email);
             }
             else
             {
-                throw new AuthenticationException("The email or password is incorrect.");
+                throw new AuthenticationException("The email or password is incorrect.", ExceptionCause.IncorrectInputData);
             }
         }
 
         public async Task<User> SignUpAsync(SignUp signUp)
         {
+            if (!SignUp.IsValidEmail(signUp.Email))
+            {
+                throw new RegistrationException(
+                    $"Cannot register new user. Not valid email address ({signUp.Email}) was given.",
+                    ExceptionCause.IncorrectInputData);
+            }
+
+            var user = await _UserRepository.GetAsync(signUp.Email);
+            if (user != null)
+            {
+                throw new RegistrationException(
+                    $"Cannot register new user. Given Email: {signUp.Email} is already used.",
+                    ExceptionCause.IncorrectInputData);
+            }
+
             if (signUp.Password != signUp.ConfirmationPassword)
             {
                 throw new RegistrationException(
@@ -52,7 +72,14 @@ namespace Domain.Services
                     ExceptionCause.IncorrectInputData);
             }
 
-            // TODO: Check if email is not used
+            var validationResult = await _UserRepository.ValidatePasswordAsync(signUp.Password);
+            if (!validationResult.IsValid)
+            {
+                throw new RegistrationException(
+                        "Cannot register new user. Given password is not valid, check details for more information.",
+                        validationResult.Errors,
+                        ExceptionCause.IncorrectInputData);
+            }
 
             var signUpUser = new User()
             {
@@ -60,8 +87,6 @@ namespace Domain.Services
                 Email = signUp.Email,
                 AccountConfirmed = false
             };
-
-            // TODO: Validate password policy
 
             var createdSuccessfully = await _UserRepository.CreateAsync(signUpUser, signUp.Password);
             if (createdSuccessfully)
