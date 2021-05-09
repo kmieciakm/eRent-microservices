@@ -46,7 +46,7 @@ namespace Web.Controllers
                 };
                 await _AuthenticationService.ConfirmAccountAsync(confirmation);
 
-                return Ok();
+                return Ok("Account confirmed successfully.");
             }
             catch (AuthenticationException authEx)
             {
