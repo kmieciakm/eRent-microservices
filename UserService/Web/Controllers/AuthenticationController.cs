@@ -68,7 +68,7 @@ namespace Web.Controllers
                when (authEx.Cause == ExceptionCause.Unknown)
             {
                 _Logger.LogError(authEx, $"User login failed unexpectedly.");
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, authEx.Message);
             }
         }
 
@@ -90,7 +90,7 @@ namespace Web.Controllers
                 when (registerEx.Cause == ExceptionCause.IncorrectInputData)
             {
                 _Logger.LogInformation(registerEx, $"Cannot register a new user.");
-                return BadRequest(registerEx.Message);
+                return BadRequest(new { registerEx.Message, registerEx.Details });
             }
             catch (RegistrationException registerEx)
                when (registerEx.Cause == ExceptionCause.Unknown)

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -54,9 +55,30 @@ namespace Database
         public async Task<bool> AuthenticateAsync(string email, string password)
         {
             var user = await GetDbUserByEmailAsync(email);
+            if (user == null)
+            {
+                return false;
+            }
             var signInResult = await _SignInManager.PasswordSignInAsync(user, password, false, false);
-
             return signInResult.Succeeded;
+        }
+
+        public async Task<ValidationResult> ValidatePasswordAsync(string password)
+        {
+            ValidationResult validationResult = new ValidationResult();
+            foreach (var validator in _UserManager.PasswordValidators)
+            {
+                var result = await validator.ValidateAsync(_UserManager, null, password);
+                if (!result.Succeeded)
+                {
+                    validationResult.IsValid = false;
+                    foreach (var err in result.Errors)
+                    {
+                        validationResult.Errors.Add(err.Description);
+                    }
+                }
+            }
+            return validationResult;
         }
 
         public async Task<string> GenerateAccountConfirmationTokenAsync(User user)

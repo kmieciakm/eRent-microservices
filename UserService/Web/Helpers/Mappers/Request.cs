@@ -28,7 +28,7 @@ namespace Web.Helpers.Mappers
                     Lastname = signUpRequest.Lastname,
                     Email = signUpRequest.Email,
                     Password = signUpRequest.Password,
-                    ConfirmationPassword = signUpRequest.Password,
+                    ConfirmationPassword = signUpRequest.ConfirmationPassword
                 };
             }
         }
