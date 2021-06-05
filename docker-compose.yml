@@ -1,0 +1,31 @@
+version: '3.8'
+
+networks:
+    api-dev:
+        driver: bridge
+
+services:
+    rentapi:
+        image: rentservice
+        build:
+            context: .
+            dockerfile: RentService\Web\Dockerfile
+        ports:
+            - 80:80
+            - 443:443
+    userapi:
+        image: userservice
+        build:
+            context: .
+            dockerfile: UserService\Web\Dockerfile
+        ports:
+            - 44450:80
+            - 44451:443
+    mailapi:
+        image: mailingservice
+        build:
+            context: .
+            dockerfile: MailingService\Web\Dockerfile
+        ports:
+            - 44460:80
+            - 44461:443
