@@ -11,6 +11,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Net;
 
 namespace Domain.Services
 {
@@ -27,14 +28,18 @@ namespace Domain.Services
         {
             _SmtpSettings = smtpSettings;
             _TemplatesSettings = templatesSettings;
+            var appPassword = Environment.GetEnvironmentVariable("MAILING_PASSWORD");
             _Sender = new SmtpSender(() => new SmtpClient(_SmtpSettings.Host)
             {
                 //EnableSsl = false,
                 //DeliveryMethod = SmtpDeliveryMethod.Network,
                 //Port = 25
-                EnableSsl = false,
-                DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
-                PickupDirectoryLocation = _SmtpSettings.TestFolder
+                //PickupDirectoryLocation = _SmtpSettings.TestFolder
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential("uAppCorp@gmail.com", appPassword)
             });
             Email.DefaultSender = _Sender;
         }
