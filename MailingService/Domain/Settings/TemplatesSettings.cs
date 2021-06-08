@@ -20,7 +20,7 @@ namespace Domain.Settings
         {
             get
             {
-                var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location); ;
+                var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 return Path.Combine(currentDirectory, "EmailTemplates");
             }
         }
