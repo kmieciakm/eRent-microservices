@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grpc", "Grpc\Grpc.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grpc.Tests", "Grpc.Tests\Grpc.Tests.csproj", "{1FAAF7E7-172F-4311-9EF7-1E8526C92006}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mailing", "Mailing\Mailing.csproj", "{F9E5F70E-08AE-452C-8731-1BFCD80557F5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageQueue", "MessageQueue\MessageQueue.csproj", "{B3059371-579E-4487-B773-023EC179E098}"
 EndProject
 Global
@@ -43,10 +41,6 @@ Global
 		{1FAAF7E7-172F-4311-9EF7-1E8526C92006}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FAAF7E7-172F-4311-9EF7-1E8526C92006}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FAAF7E7-172F-4311-9EF7-1E8526C92006}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9E5F70E-08AE-452C-8731-1BFCD80557F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9E5F70E-08AE-452C-8731-1BFCD80557F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9E5F70E-08AE-452C-8731-1BFCD80557F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9E5F70E-08AE-452C-8731-1BFCD80557F5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B3059371-579E-4487-B773-023EC179E098}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B3059371-579E-4487-B773-023EC179E098}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3059371-579E-4487-B773-023EC179E098}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -7,7 +7,7 @@ using Domain.Services;
 using Domain.Services.Contracts;
 using Grpc.Helpers;
 using Grpc.Services;
-using Mailing;
+using MessageQueue;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -52,7 +52,7 @@ namespace Grpc
 
             // Settings
             services.Configure<AuthenticationSettings>(Configuration.GetSection("AuthenticationSettings"));
-            services.Configure<MailingSettings>(Configuration.GetSection("AMailingSettings"));
+            services.Configure<MailingSettings>(Configuration.GetSection("MailingSettings"));
 
             // Domain services
             services.AddScoped<ITokenService, TokenService>();
