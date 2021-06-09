@@ -20,5 +20,10 @@ namespace Web.Models
             Lastname = clientEntity.Lastname;
             Email = clientEntity.Email;
         }
+
+        public static IEnumerable<ClientDto> Map(IEnumerable<ClientEntity> clients)
+        {
+            return clients.Select(client => new ClientDto(client));
+        }
     }
 }

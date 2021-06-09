@@ -23,6 +23,17 @@ namespace Database.Repositories
                 .FirstOrDefault(client => client.ClientGuid.Equals(clientGuid));
         }
 
+        public DbClientEntity Get(string email)
+        {
+            return _DbContext.Clients
+               .FirstOrDefault(client => client.Email == email);
+        }
+
+        public IEnumerable<DbClientEntity> GetAll()
+        {
+            return _DbContext.Clients;
+        }
+
         public bool CreateAndSave(DbClientEntity client)
         {
             _DbContext.Clients.Add(client);

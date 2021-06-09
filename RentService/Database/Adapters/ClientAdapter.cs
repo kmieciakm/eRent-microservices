@@ -11,6 +11,7 @@ namespace Database.Adapters
     class ClientAdapter : IClientQuery, IClientCreate, IClientModify, IClientDelete
     {
         private IClientRepository _ClientRepository { get; set; }
+
         public ClientAdapter(IClientRepository clientRepository)
         {
             _ClientRepository = clientRepository;
@@ -31,6 +32,18 @@ namespace Database.Adapters
         {
             var dbClient = _ClientRepository.Get(clientGuid);
             return Mapper.Client.MapToClientEntity(dbClient);
+        }
+
+        ClientEntity IClientQuery.GetClient(string email)
+        {
+            var dbClient = _ClientRepository.Get(email);
+            return Mapper.Client.MapToClientEntity(dbClient);
+        }
+
+        IEnumerable<ClientEntity> IClientQuery.GetClients()
+        {
+            var dbClients = _ClientRepository.GetAll();
+            return Mapper.Client.MapToClientEntity(dbClients);
         }
 
         bool IClientModify.Update(ClientEntity client)

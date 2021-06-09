@@ -60,6 +60,7 @@ namespace Web.Setup
         {
             services.AddScoped<ICarRentService, CarRentService>();
             services.AddScoped<ICarService, CarService>();
+            services.AddScoped<IClientService, ClientService>();
 
             return services;
         }

@@ -11,5 +11,7 @@ namespace Domain.Ports.Infrastructure.Client
     public interface IClientQuery
     {
         ClientEntity GetClient(Guid clientGuid);
+        ClientEntity GetClient(string email);
+        IEnumerable<ClientEntity> GetClients();
     }
 }

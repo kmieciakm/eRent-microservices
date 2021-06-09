@@ -2,6 +2,7 @@
 using Domain.DomainModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Database.Helpers.Mappers
@@ -32,6 +33,11 @@ namespace Database.Helpers.Mappers
                     dbClientEntity.Lastname,
                     dbClientEntity.Email
                 );
+            }
+
+            public static IEnumerable<ClientEntity> MapToClientEntity(IEnumerable<DbClientEntity> dbClientsEntity)
+            {
+                return dbClientsEntity.Select(dbClient => MapToClientEntity(dbClient));
             }
         }
     }
