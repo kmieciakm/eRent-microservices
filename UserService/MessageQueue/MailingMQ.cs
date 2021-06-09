@@ -22,7 +22,7 @@ namespace MessageQueue
                 Port = 5672,
                 UserName = "rabbitmq",
                 Password = "rabbitmq"
-                //Uri = new Uri("amqp://rabbitmq:rabbitmq@localhost:5672")
+                // Uri = new Uri("amqp://rabbitmq:rabbitmq@localhost:5672")
             };
         }
 

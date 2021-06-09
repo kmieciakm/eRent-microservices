@@ -1,6 +1,7 @@
 using Domain.Services;
 using Domain.Services.Contracts;
 using Domain.Settings;
+using MessageQueue;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Services.Background;
 
 namespace Web
 {
@@ -35,6 +37,9 @@ namespace Web
             services.Configure<TemplatesSettings>(Configuration.GetSection("TemplatesSettings"));
 
             services.AddSingleton<IMailSender, MailSender>();
+            services.AddSingleton<IAutomaticMailSender, MailingConsumer>();
+
+            services.AddHostedService<MailingServiceWorker>();
 
             services.AddSwaggerGen(config =>
             {
