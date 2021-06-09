@@ -9,5 +9,6 @@ namespace Domain.Ports.Presenters
     {
         IEnumerable<ClientEntity> GetClients();
         ClientEntity GetClientByEmail(string email);
+        ClientEntity CreateClient(Guid clientGuid, string firstname, string lastname, string email);
     }
 }

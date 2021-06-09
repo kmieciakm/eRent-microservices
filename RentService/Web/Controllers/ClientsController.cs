@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Models;
+using Web.Models.Requests;
 
 namespace Web.Controllers
 {
@@ -49,5 +50,21 @@ namespace Web.Controllers
             if (client == null) return NotFound();
             return new ClientDto(client);
         }
+
+        [HttpPost("")]
+        [ActionName("CreateClient")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public ActionResult CreateClient([FromBody] ClientCreateRequest clientRequest)
+        {
+            var client = _ClientService.CreateClient(
+                    clientRequest.ClientGuid,
+                    clientRequest.Firstname,
+                    clientRequest.Lastname,
+                    clientRequest.Email
+                );
+            var clientDto = new ClientDto(client);
+            return CreatedAtAction(nameof(GetClient), new { email = clientDto.Email }, clientDto);
+        }
+
     }
 }
