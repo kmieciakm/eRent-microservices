@@ -1,0 +1,43 @@
+version: '3.8'
+
+networks:
+    api-dev:
+        driver: bridge
+
+services:
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        hostname: my-rabbit
+        ports:
+          - 5672:5672
+          - 15672:15672
+    rentapi:
+        image: rentservice
+        build:
+            context: .
+            dockerfile: RentService\Web\Dockerfile
+        ports:
+            - 80:80
+            - 443:443
+        depends_on:
+            - rabbitmq
+    userapi:
+        image: userservice
+        build:
+            context: .
+            dockerfile: UserService\Web\Dockerfile
+        ports:
+            - 44450:80
+            - 44451:443
+        depends_on:
+            - rabbitmq
+    mailapi:
+        image: mailingservice
+        build:
+            context: .
+            dockerfile: MailingService\Web\Dockerfile
+        ports:
+            - 44460:80
+            - 44461:443
+        depends_on:
+            - rabbitmq

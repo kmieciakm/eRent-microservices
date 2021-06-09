@@ -1,0 +1,74 @@
+version: '3.8'
+
+networks:
+    api-dev:
+        driver: bridge
+
+services:
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        hostname: my-rabbit
+        volumes:
+            - ./rabbitmq/etc/definitions.json:/etc/rabbitmq/definitions.json
+            - ./rabbitmq/etc/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+            - ./rabbitmq/data:/var/lib/rabbitmq/mnesia/rabbit@my-rabbit
+            - ./rabbitmq/logs:/var/log/rabbitmq/log
+        ports:
+            - 5672:5672
+            - 15672:15672
+        mem_limit: 2048m
+    rentapi:
+        image: rentservice
+        build:
+            context: .
+            dockerfile: RentService\Web\Dockerfile
+        ports:
+            - 80:80
+            - 443:443
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=dev
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+        volumes:
+            - ~/.aspnet/https:/https:ro
+        depends_on:
+            - rabbitmq
+        mem_limit: 1024m
+    userapi:
+        image: userservice
+        build:
+            context: .
+            dockerfile: UserService\Web\Dockerfile
+        ports:
+            - 44450:80
+            - 44451:443
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=dev
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+        volumes:
+            - ~/.aspnet/https:/https:ro
+        depends_on:
+            - rabbitmq
+        mem_limit: 1024m
+    mailapi:
+        image: mailingservice
+        build:
+            context: .
+            dockerfile: MailingService\Web\Dockerfile
+        ports:
+            - 44460:80
+            - 44461:443
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=dev
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+            - MAILING_PASSWORD=${MAILING_PASSWORD}
+        volumes:
+            - ~/.aspnet/https:/https:ro
+        depends_on:
+            - rabbitmq
+        mem_limit: 1024m

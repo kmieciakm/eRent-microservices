@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option csharp_namespace = "Grpc.Tests.Protos";
+
+package authentication;
+
+service Authentication {
+  rpc SignIn (GrpcSignInRequest) returns (GrpcSignInReply);
+  rpc SignUp (GrpcSignUpRequest) returns (GrpcSignUpReply);
+}
+
+message GrpcSignInRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message GrpcSignInReply {
+  string token = 1;
+}
+
+message GrpcSignUpRequest {
+  string name = 1;
+  string email = 2;
+  string password = 3;
+  string passwordConfirmation = 4;
+}
+
+message GrpcSignUpReply {
+  string name = 1;
+  string email = 2;
+}
