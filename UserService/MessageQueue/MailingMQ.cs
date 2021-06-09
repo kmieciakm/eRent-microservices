@@ -8,9 +8,11 @@ using System.Web;
 
 namespace MessageQueue
 {
-    public class MailingMQ : IMailSender
+    public class MailingMQ : IMailSender, IDisposable
     {
         private ConnectionFactory _Factory { get; }
+        private IConnection _Connection { get; set; }
+        private IModel _Channel { get; set; }
         private MailingSettings _Settings { get; }
 
         public MailingMQ(IOptions<MailingSettings> mailingSettings)
@@ -24,14 +26,13 @@ namespace MessageQueue
                 Password = "rabbitmq"
                 // Uri = new Uri("amqp://rabbitmq:rabbitmq@localhost:5672")
             };
+            _Connection = _Factory.CreateConnection();
+            _Channel = _Connection.CreateModel();
         }
 
         public void SendConfirmationEmail(string to, string token)
         {
-            using var connection = _Factory.CreateConnection();
-            using var channel = connection.CreateModel();
-
-            channel.QueueDeclare("mailing-queue",
+            _Channel.QueueDeclare("mailing-queue",
                 durable: true,
                 exclusive: false,
                 autoDelete: false,
@@ -43,7 +44,13 @@ namespace MessageQueue
             var message = new { Name = "Send Confirmation Email", To = to, Token = tokenUrl };
             var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
 
-            channel.BasicPublish("", "mailing-queue", null, body);
+            _Channel.BasicPublish("", "mailing-queue", null, body);
+        }
+
+        public void Dispose()
+        {
+            _Channel?.Close();
+            _Connection?.Close();
         }
     }
 }

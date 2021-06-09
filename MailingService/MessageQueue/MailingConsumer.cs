@@ -17,6 +17,7 @@ namespace MessageQueue
 
         public MailingConsumer(IMailSender mailSender)
         {
+            _MailSender = mailSender;
             _Factory = new ConnectionFactory
             {
                 HostName = "my-rabbit",
@@ -25,14 +26,12 @@ namespace MessageQueue
                 Password = "rabbitmq"
                 // Uri = new Uri("amqp://rabbitmq:rabbitmq@localhost:5672")
             };
-            _MailSender = mailSender;
+            _Connection = _Factory.CreateConnection();
+            _Channel = _Connection.CreateModel();
         }
 
         public void ListenRequests()
         {
-            _Connection = _Factory.CreateConnection();
-            _Channel = _Connection.CreateModel();
-
             _Channel.QueueDeclare("mailing-queue",
                     durable: true,
                     exclusive: false,
@@ -55,8 +54,8 @@ namespace MessageQueue
 
         public void Dispose()
         {
-            _Channel.Close();
-            _Connection.Close();
+            _Channel?.Close();
+            _Connection?.Close();
         }
     }
 }
