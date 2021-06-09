@@ -1,4 +1,4 @@
-﻿using Domain.Services.Contracts;
+﻿using Domain.Services.Infrastructure;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;

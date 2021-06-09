@@ -1,4 +1,5 @@
 ﻿using Domain.Services.Contracts;
+using Domain.Services.Infrastructure;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;

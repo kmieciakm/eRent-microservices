@@ -1,5 +1,6 @@
 using Domain.Services;
 using Domain.Services.Contracts;
+using Domain.Services.Infrastructure;
 using Domain.Settings;
 using MessageQueue;
 using Microsoft.AspNetCore.Builder;

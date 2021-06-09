@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Services.Contracts
+namespace Domain.Services.Infrastructure
 {
     public interface IAutomaticMailSender
     {
