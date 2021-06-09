@@ -5,6 +5,12 @@ networks:
         driver: bridge
 
 services:
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        hostname: my-rabbit
+        ports:
+          - 5672:5672
+          - 15672:15672
     rentapi:
         image: rentservice
         build:
@@ -13,6 +19,8 @@ services:
         ports:
             - 80:80
             - 443:443
+        depends_on:
+            - rabbitmq
     userapi:
         image: userservice
         build:
@@ -21,6 +29,8 @@ services:
         ports:
             - 44450:80
             - 44451:443
+        depends_on:
+            - rabbitmq
     mailapi:
         image: mailingservice
         build:
@@ -29,3 +39,5 @@ services:
         ports:
             - 44460:80
             - 44461:443
+        depends_on:
+            - rabbitmq

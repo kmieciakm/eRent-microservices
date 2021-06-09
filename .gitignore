@@ -1,2 +1,4 @@
 .vs/
 *.dgml
+rabbitmq/data
+rabbitmq/logs
