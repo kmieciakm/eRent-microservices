@@ -3,7 +3,7 @@ using Domain.Infrastructure;
 using Domain.Models;
 using Domain.Services;
 using Domain.Services.Contracts;
-using Mailing;
+using MessageQueue;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -54,7 +54,8 @@ namespace Web
 
             // Domain services
             services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IMailSender, ConsoleMailSender>();
+            // services.AddScoped<IMailSender, ConsoleMailSender>();
+            services.AddScoped<IMailSender, MailingMQ>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
 

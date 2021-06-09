@@ -16,6 +16,7 @@ services:
         ports:
             - 5672:5672
             - 15672:15672
+        mem_limit: 2048m
     rentapi:
         image: rentservice
         build:
@@ -33,6 +34,7 @@ services:
             - ~/.aspnet/https:/https:ro
         depends_on:
             - rabbitmq
+        mem_limit: 1024m
     userapi:
         image: userservice
         build:
@@ -50,6 +52,7 @@ services:
             - ~/.aspnet/https:/https:ro
         depends_on:
             - rabbitmq
+        mem_limit: 1024m
     mailapi:
         image: mailingservice
         build:
@@ -68,3 +71,4 @@ services:
             - ~/.aspnet/https:/https:ro
         depends_on:
             - rabbitmq
+        mem_limit: 1024m
