@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Web.Services.Background;
 using Web.Setup;
 
 namespace Web
@@ -43,6 +44,8 @@ namespace Web
                 .AddSeedSettings(Configuration)
                 .AddRepositories()
                 .AddApplicationServices();
+
+            services.AddHostedService<AccountWorkerService>();
         }
 
         public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)

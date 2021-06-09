@@ -56,6 +56,7 @@ namespace Web
             services.AddScoped<ITokenService, TokenService>();
             // services.AddScoped<IMailSender, ConsoleMailSender>();
             services.AddScoped<IMailSender, MailingMQ>();
+            services.AddScoped<IServicesManger, AccountMQ>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
 

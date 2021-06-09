@@ -17,9 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Setup", "Web.Setup\Web.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.FunctionalTests", "Web.FunctionalTests\Web.FunctionalTests.csproj", "{3E2EE9D2-EF17-4002-85C3-0B9080CC3779}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOAP", "SOAP\SOAP.csproj", "{9ECAABD5-978A-451B-B8DF-54E750FD8B62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SOAP", "SOAP\SOAP.csproj", "{9ECAABD5-978A-451B-B8DF-54E750FD8B62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOAP.FunctionalTests", "SOAP.FunctionalTests\SOAP.FunctionalTests.csproj", "{C9DBDE8A-2239-4044-8173-026616EE4F67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SOAP.FunctionalTests", "SOAP.FunctionalTests\SOAP.FunctionalTests.csproj", "{C9DBDE8A-2239-4044-8173-026616EE4F67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageQueue", "MessageQueue\MessageQueue.csproj", "{C6DC4577-20ED-4B9E-B339-8014FC33349B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{C9DBDE8A-2239-4044-8173-026616EE4F67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9DBDE8A-2239-4044-8173-026616EE4F67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9DBDE8A-2239-4044-8173-026616EE4F67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6DC4577-20ED-4B9E-B339-8014FC33349B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6DC4577-20ED-4B9E-B339-8014FC33349B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6DC4577-20ED-4B9E-B339-8014FC33349B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6DC4577-20ED-4B9E-B339-8014FC33349B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain.Ports.Infrastructure;
+using MessageQueue;
 
 namespace Web.Setup
 {
@@ -22,7 +24,7 @@ namespace Web.Setup
     {
         public static IServiceCollection AddDbContext(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction)
         {
-            services.AddDbContext<RentDbContext>(optionsAction);
+            services.AddDbContext<RentDbContext>(optionsAction, contextLifetime: ServiceLifetime.Singleton);
             return services;
         }
 
@@ -38,29 +40,30 @@ namespace Web.Setup
 
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<IClientRepository, ClientRepository>();
-            services.AddScoped<IClientQuery, ClientAdapter>();
-            services.AddScoped<IClientCreate, ClientAdapter>();
-            services.AddScoped<IClientModify, ClientAdapter>();
-            services.AddScoped<IClientDelete, ClientAdapter>();
+            services.AddSingleton<IClientRepository, ClientRepository>();
+            services.AddSingleton<IClientQuery, ClientAdapter>();
+            services.AddSingleton<IClientCreate, ClientAdapter>();
+            services.AddSingleton<IClientModify, ClientAdapter>();
+            services.AddSingleton<IClientDelete, ClientAdapter>();
 
-            services.AddScoped<IRentRepository, RentRepository>();
-            services.AddScoped<IRentQuery, RentAdapter>();
-            services.AddScoped<IRentCreator, RentAdapter>();
-            services.AddScoped<IRentModify, RentAdapter>();
-            services.AddScoped<IRentCancel, RentAdapter>();
+            services.AddSingleton<IRentRepository, RentRepository>();
+            services.AddSingleton<IRentQuery, RentAdapter>();
+            services.AddSingleton<IRentCreator, RentAdapter>();
+            services.AddSingleton<IRentModify, RentAdapter>();
+            services.AddSingleton<IRentCancel, RentAdapter>();
 
-            services.AddScoped<ICarRepository, CarRepository>();
-            services.AddScoped<ICarQuery, CarAdapter>();
+            services.AddSingleton<ICarRepository, CarRepository>();
+            services.AddSingleton<ICarQuery, CarAdapter>();
 
             return services;
         }
 
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped<ICarRentService, CarRentService>();
-            services.AddScoped<ICarService, CarService>();
-            services.AddScoped<IClientService, ClientService>();
+            services.AddSingleton<ICarRentService, CarRentService>();
+            services.AddSingleton<ICarService, CarService>();
+            services.AddSingleton<IClientService, ClientService>();
+            services.AddSingleton<IAutomaticAccountCreator, AccountCreator>();
 
             return services;
         }
