@@ -37,6 +37,13 @@ namespace Database
             return dbUser?.ToDomainUser();
         }
 
+        private async Task<DbUser> GetDbUserByIdAsync(Guid id)
+        {
+            return await _UserManager
+                .Users
+                .FirstOrDefaultAsync(user => user.Id == id.ToString());
+        }
+
         private async Task<DbUser> GetDbUserByEmailAsync(string email)
         {
             return await _UserManager
@@ -81,7 +88,7 @@ namespace Database
             return validationResult;
         }
 
-        public async Task<string> GenerateAccountConfirmationTokenAsync(User user)
+        public async Task<string> GenerateConfirmationTokenAsync(User user)
         {
             var dbUser = await GetDbUserByEmailAsync(user.Email);
             var confirmationToken = await _UserManager.GenerateEmailConfirmationTokenAsync(dbUser);
@@ -95,6 +102,12 @@ namespace Database
             var confirmationResult = await _UserManager.ConfirmEmailAsync(dbUser, confirmationToken);
 
             return confirmationResult.Succeeded;
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            var dbUser = await GetDbUserByIdAsync(id);
+            await _UserManager.DeleteAsync(dbUser);
         }
     }
 }

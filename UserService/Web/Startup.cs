@@ -1,13 +1,16 @@
 using Database;
+using Database.Models;
 using Domain.Infrastructure;
 using Domain.Models;
 using Domain.Services;
 using Domain.Services.Contracts;
-using MessageQueue;
+using MessageQueue.Account;
+using MessageQueue.Mailing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Web.Helpers;
+using Web.Services.Background;
 
 namespace Web
 {
@@ -54,10 +58,12 @@ namespace Web
 
             // Domain services
             services.AddScoped<ITokenService, TokenService>();
-            // services.AddScoped<IMailSender, ConsoleMailSender>();
-            services.AddScoped<IMailSender, MailingMQ>();
-            services.AddScoped<IServicesManger, AccountMQ>();
+            services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IMailSender, MailingMQ>();
+            services.AddSingleton<IAccountsManger, AccountMQ>();
+
+            services.AddHostedService<AccountWorkerService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)

@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Ports.Infrastructure;
-using MessageQueue;
+using MessageQueue.Account;
 
 namespace Web.Setup
 {

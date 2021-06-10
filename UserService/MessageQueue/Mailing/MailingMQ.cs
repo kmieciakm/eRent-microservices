@@ -6,7 +6,7 @@ using System;
 using System.Text;
 using System.Web;
 
-namespace MessageQueue
+namespace MessageQueue.Mailing
 {
     public class MailingMQ : IMailSender, IDisposable
     {
@@ -20,11 +20,11 @@ namespace MessageQueue
             _Settings = mailingSettings.Value;
             _Factory = new ConnectionFactory
             {
-                HostName = "my-rabbit",
+                /*HostName = "my-rabbit",
                 Port = 5672,
                 UserName = "rabbitmq",
-                Password = "rabbitmq"
-                // Uri = new Uri("amqp://rabbitmq:rabbitmq@localhost:5672")
+                Password = "rabbitmq"*/
+                Uri = new Uri("amqp://rabbitmq:rabbitmq@localhost:5672")
             };
             _Connection = _Factory.CreateConnection();
             _Channel = _Connection.CreateModel();
@@ -38,13 +38,24 @@ namespace MessageQueue
                 autoDelete: false,
                 arguments: null);
 
-            var tokenEncoded = HttpUtility.UrlEncode(token);
-            string tokenUrl = $"{_Settings.AccountUrl}confirm?email={to}&token={tokenEncoded}";
+            string tokenUrl = GenerateAccountConfirmatioUrl(to, token);
 
-            var message = new { Name = "Send Confirmation Email", To = to, Token = tokenUrl };
+            var message = new
+            {
+                Name = "Send Confirmation Email",
+                To = to,
+                Token = tokenUrl
+            };
             var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
 
             _Channel.BasicPublish("", "mailing-queue", null, body);
+        }
+
+        private string GenerateAccountConfirmatioUrl(string to, string token)
+        {
+            var tokenEncoded = HttpUtility.UrlEncode(token);
+            string tokenUrl = $"{_Settings.AccountUrl}confirm?email={to}&token={tokenEncoded}";
+            return tokenUrl;
         }
 
         public void Dispose()
