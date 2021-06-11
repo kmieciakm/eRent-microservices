@@ -17,6 +17,12 @@ namespace MessageQueue.Account
         private static ConnectionFactory _Factory { get; set; }
         private static IConnection _Connection { get; set; }
         private static IModel _Channel { get; set; }
+        private IServiceCollection _ServiceCollection { get; }
+
+        public AccountMQ(IServiceCollection serviceCollection)
+        {
+            _ServiceCollection = serviceCollection;
+        }
 
         public void Connect()
         {
@@ -30,9 +36,10 @@ namespace MessageQueue.Account
             };
             _Connection = _Factory.CreateConnection();
             _Channel = _Connection.CreateModel();
+            ListenRequests();
         }
 
-        public void CreateAccount(User user, Action<User> onSuccess, Action<User> onFailure)
+        public void CreateAccount(User user)
         {
             _Channel.QueueDeclare("account-queue",
                      durable: true,
@@ -51,11 +58,10 @@ namespace MessageQueue.Account
             };
             var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
 
-            ListenRequests(user, onSuccess, onFailure);
             _Channel.BasicPublish("", "account-queue", null, body);
         }
 
-        public void ListenRequests(User user, Action<User> onSuccess, Action<User> onFailure)
+        public void ListenRequests()
         {
             _Channel.QueueDeclare("account-queue",
                  durable: true,
@@ -64,8 +70,8 @@ namespace MessageQueue.Account
                  arguments: null);
 
             var consumer = new EventingBasicConsumer(_Channel);
-
-            consumer.Received += (sender, e) => {
+            consumer.Received += (sender, e) =>
+            {
                 var body = e.Body.ToArray();
                 dynamic message = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(body));
                 var userGuid = Guid.Parse(message.Guid.ToString());
@@ -74,12 +80,29 @@ namespace MessageQueue.Account
 
                 if (Enum.TryParse(operationType, out AccountOperation operation))
                 {
-                    switch (operation) {
+                    switch (operation)
+                    {
                         case AccountOperation.DELETE_ACCOUNT:
-                            onFailure?.Invoke(user);
+                            using (var sp = _ServiceCollection.BuildServiceProvider())
+                            {
+                                using (var scope = sp.CreateScope())
+                                {
+                                    var accountService = scope.ServiceProvider.GetRequiredService<IAccountService>();
+                                    accountService.DeleteAccountAsync(userGuid);
+                                }
+                            }
                             break;
                         case AccountOperation.CONFIRM_ACCOUNT:
-                            onSuccess?.Invoke(user);
+                            using (var sp = _ServiceCollection.BuildServiceProvider())
+                            {
+                                using (var scope = sp.CreateScope())
+                                {
+                                    var tokenService = scope.ServiceProvider.GetRequiredService<ITokenService>();
+                                    var mailSender = scope.ServiceProvider.GetRequiredService<IMailSender>();
+                                    var accountConfirmationToken = tokenService.GenerateAccountConfirmationTokenAsync(userGuid).Result;
+                                    mailSender.SendConfirmationEmail(userEmail, accountConfirmationToken);
+                                }
+                            }
                             break;
                     }
                 }

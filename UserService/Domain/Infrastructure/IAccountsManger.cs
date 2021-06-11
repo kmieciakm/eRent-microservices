@@ -9,7 +9,7 @@ namespace Domain.Infrastructure
 {
     public interface IAccountsManger
     {
-        void CreateAccount(User user, Action<User> onSuccess, Action<User> onFailure);
+        void CreateAccount(User user);
         void Connect();
     }
 }

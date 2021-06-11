@@ -61,7 +61,7 @@ namespace Web
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IMailSender, MailingMQ>();
-            services.AddSingleton<IAccountsManger, AccountMQ>();
+            services.AddSingleton<IAccountsManger>(_ => new AccountMQ(services));
 
             services.AddHostedService<AccountWorkerService>();
         }

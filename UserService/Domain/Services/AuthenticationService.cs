@@ -99,15 +99,7 @@ namespace Domain.Services
             if (createdSuccessfully)
             {
                 var createdUser = await _UserRepository.GetAsync(signUp.Email);
-                _AccountsManager.CreateAccount(
-                    createdUser,
-                    createdUser => {
-                        var accountConfirmationToken = _TokenService.GenerateAccountConfirmationTokenAsync(createdUser.Guid).Result;
-                        _MailSender.SendConfirmationEmail(createdUser.Email, accountConfirmationToken);
-                    },
-                    createdUser => {
-                        _AccountService.DeleteAccountAsync(createdUser.Guid);
-                    });
+                _AccountsManager.CreateAccount(createdUser);
                 return createdUser;
             }
             else
