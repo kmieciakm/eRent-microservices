@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MessageQueue
+namespace MessageQueue.Mailing
 {
     public class MailingSettings
     {

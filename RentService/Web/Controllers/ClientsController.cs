@@ -51,7 +51,7 @@ namespace Web.Controllers
             return new ClientDto(client);
         }
 
-        /*[HttpPost("")]
+        [HttpPost("")]
         [ActionName("CreateClient")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult CreateClient([FromBody] ClientCreateRequest clientRequest)
@@ -64,6 +64,6 @@ namespace Web.Controllers
                 );
             var clientDto = new ClientDto(client);
             return CreatedAtAction(nameof(GetClient), new { email = clientDto.Email }, clientDto);
-        }*/
+        }
     }
 }

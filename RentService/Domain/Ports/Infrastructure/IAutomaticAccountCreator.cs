@@ -6,6 +6,6 @@ namespace Domain.Ports.Infrastructure
 {
     public interface IAutomaticAccountCreator
     {
-        void ListenRequests();
+        void Connect();
     }
 }
