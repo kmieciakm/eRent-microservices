@@ -24,7 +24,7 @@ namespace MessageQueue.Account
                 Port = 5672,
                 UserName = "rabbitmq",
                 Password = "rabbitmq"
-                // Uri = new Uri("amqp://rabbitmq:rabbitmq@localhost:5672")
+                //Uri = new Uri("amqp://rabbitmq:rabbitmq@localhost:5672")
             };
             _Connection = _Factory.CreateConnection();
             _Channel = _Connection.CreateModel();
@@ -62,23 +62,28 @@ namespace MessageQueue.Account
                                 message.OperationType = AccountOperation.CONFIRM_ACCOUNT;
                                 byte[] confirmBody = ParseMessage(message);
                                 _Channel.BasicPublish("", "account-queue", null, confirmBody);
+                                _Channel.BasicAck(e.DeliveryTag, false);
                             }
                             catch (Exception)
                             {
                                 message.OperationType = AccountOperation.DELETE_ACCOUNT;
                                 byte[] deleteBody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
                                 _Channel.BasicPublish("", "account-queue", null, deleteBody);
+                                _Channel.BasicAck(e.DeliveryTag, false);
                             }
+                            break;
+                       default:
+                            _Channel.BasicNack(e.DeliveryTag, false, true);
                             break;
                     }
                 }
                 else
                 {
-                    _Channel.BasicReject(e.DeliveryTag, false);
+                    _Channel.BasicNack(e.DeliveryTag, false, false);
                 }
             };
 
-            _Channel.BasicConsume("account-queue", true, consumer);
+            _Channel.BasicConsume("account-queue", false, consumer);
         }
 
         private static byte[] ParseMessage(dynamic message)

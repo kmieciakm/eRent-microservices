@@ -20,11 +20,11 @@ namespace MessageQueue.Mailing
             _Settings = mailingSettings.Value;
             _Factory = new ConnectionFactory
             {
-                /*HostName = "my-rabbit",
+                HostName = "my-rabbit",
                 Port = 5672,
                 UserName = "rabbitmq",
-                Password = "rabbitmq"*/
-                Uri = new Uri("amqp://rabbitmq:rabbitmq@localhost:5672")
+                Password = "rabbitmq"
+                //Uri = new Uri("amqp://rabbitmq:rabbitmq@localhost:5672")
             };
             _Connection = _Factory.CreateConnection();
             _Channel = _Connection.CreateModel();

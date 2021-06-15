@@ -28,11 +28,11 @@ namespace MessageQueue.Account
         {
             _Factory = new ConnectionFactory
             {
-                /*HostName = "my-rabbit",
+                HostName = "my-rabbit",
                 Port = 5672,
                 UserName = "rabbitmq",
-                Password = "rabbitmq"*/
-                Uri = new Uri("amqp://rabbitmq:rabbitmq@localhost:5672")
+                Password = "rabbitmq"
+                //Uri = new Uri("amqp://rabbitmq:rabbitmq@localhost:5672")
             };
             _Connection = _Factory.CreateConnection();
             _Channel = _Connection.CreateModel();
@@ -91,6 +91,7 @@ namespace MessageQueue.Account
                                     accountService.DeleteAccountAsync(userGuid);
                                 }
                             }
+                            _Channel.BasicAck(e.DeliveryTag, false);
                             break;
                         case AccountOperation.CONFIRM_ACCOUNT:
                             using (var sp = _ServiceCollection.BuildServiceProvider())
@@ -103,16 +104,20 @@ namespace MessageQueue.Account
                                     mailSender.SendConfirmationEmail(userEmail, accountConfirmationToken);
                                 }
                             }
+                            _Channel.BasicAck(e.DeliveryTag, false);
+                            break;
+                        default:
+                            _Channel.BasicNack(e.DeliveryTag, false, true);
                             break;
                     }
                 }
                 else
                 {
-                    _Channel.BasicReject(e.DeliveryTag, false);
+                    _Channel.BasicNack(e.DeliveryTag, false, false);
                 }
             };
 
-            _Channel.BasicConsume("account-queue", true, consumer);
+            _Channel.BasicConsume("account-queue", false, consumer);
         }
 
         public void Dispose()
