@@ -10,7 +10,7 @@ namespace MessageQueue.Account
 {
     public class AccountCreator : IAutomaticAccountCreator, IDisposable
     {
-        private ConnectionFactory _Factory { get; }
+        private ConnectionFactory _Factory { get; set; }
         private IConnection _Connection { get; set; }
         private IModel _Channel { get; set; }
         private IClientService _ClientService { get; }
@@ -18,6 +18,10 @@ namespace MessageQueue.Account
         public AccountCreator(IClientService clientService)
         {
             _ClientService = clientService;
+        }
+
+        public void Connect()
+        {
             _Factory = new ConnectionFactory
             {
                 HostName = "my-rabbit",
@@ -28,6 +32,8 @@ namespace MessageQueue.Account
             };
             _Connection = _Factory.CreateConnection();
             _Channel = _Connection.CreateModel();
+
+            ListenRequests();
         }
 
         public void ListenRequests()

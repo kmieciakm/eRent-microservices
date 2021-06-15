@@ -10,7 +10,7 @@ namespace MessageQueue.Mailing
 {
     public class MailingMQ : IMailSender, IDisposable
     {
-        private ConnectionFactory _Factory { get; }
+        private ConnectionFactory _Factory { get; set; }
         private IConnection _Connection { get; set; }
         private IModel _Channel { get; set; }
         private MailingSettings _Settings { get; }
@@ -18,6 +18,11 @@ namespace MessageQueue.Mailing
         public MailingMQ(IOptions<MailingSettings> mailingSettings)
         {
             _Settings = mailingSettings.Value;
+            Connect();
+        }
+
+        public void Connect()
+        {
             _Factory = new ConnectionFactory
             {
                 HostName = "my-rabbit",

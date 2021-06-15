@@ -10,7 +10,7 @@ namespace MessageQueue
 {
     public class MailingConsumer : IAutomaticMailSender, IDisposable
     {
-        private ConnectionFactory _Factory { get; }
+        private ConnectionFactory _Factory { get; set; }
         private IConnection _Connection { get; set; }
         private IModel _Channel { get; set; }
         private IMailSender _MailSender { get; }
@@ -18,6 +18,10 @@ namespace MessageQueue
         public MailingConsumer(IMailSender mailSender)
         {
             _MailSender = mailSender;
+        }
+
+        public void Connect()
+        {
             _Factory = new ConnectionFactory
             {
                 HostName = "my-rabbit",
@@ -28,6 +32,8 @@ namespace MessageQueue
             };
             _Connection = _Factory.CreateConnection();
             _Channel = _Connection.CreateModel();
+
+            ListenRequests();
         }
 
         public void ListenRequests()

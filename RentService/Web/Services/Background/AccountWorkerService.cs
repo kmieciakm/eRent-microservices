@@ -13,17 +13,26 @@ namespace Web.Services.Background
     {
         private ILogger<AccountWorkerService> _Logger { get; }
         private IAutomaticAccountCreator _AccountCreator { get; }
+        private System.Timers.Timer _Timer { get; }
 
         public AccountWorkerService(ILogger<AccountWorkerService> logger, IAutomaticAccountCreator accountCreator)
         {
             _Logger = logger;
             _AccountCreator = accountCreator;
+            _Timer = new System.Timers.Timer(15000);
+            _Timer.Elapsed += (sender, e) =>
+            {
+                _Logger.LogInformation($"[Rent Service] - Connecting to RabbitMQ ...");
+                _AccountCreator.Connect();
+                _Logger.LogInformation($"[Rent Service] - Connected.");
+            };
+            _Timer.AutoReset = false;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _Logger.LogInformation($"Start - Account Backgroud Service");
-            _AccountCreator.ListenRequests();
+            _Logger.LogInformation($"[Rent Service] - Start Backgroud Service ...");
+            _Timer.Start();
             return Task.CompletedTask;
         }
     }

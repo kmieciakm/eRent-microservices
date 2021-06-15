@@ -36,6 +36,7 @@ namespace MessageQueue.Account
             };
             _Connection = _Factory.CreateConnection();
             _Channel = _Connection.CreateModel();
+
             ListenRequests();
         }
 
