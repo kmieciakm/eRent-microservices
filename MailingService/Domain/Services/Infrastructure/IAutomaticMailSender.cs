@@ -6,6 +6,6 @@ namespace Domain.Services.Infrastructure
 {
     public interface IAutomaticMailSender
     {
-        void ListenRequests();
+        void Connect();
     }
 }

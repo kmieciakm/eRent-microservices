@@ -15,7 +15,8 @@ namespace Web.Helpers
         public static IServiceCollection AddInMemoryDatabase(this IServiceCollection services)
         {
             services
-                .AddDbContext<UserContext>(options => options.UseInMemoryDatabase("InMemoryUserDatabase"))
+                .AddDbContext<UserContext>(options =>
+                    options.UseInMemoryDatabase("InMemoryUserDatabase"))
                 .AddIdentity<DbUser, IdentityRole>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<UserContext>()

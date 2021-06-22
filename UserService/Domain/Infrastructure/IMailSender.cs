@@ -6,6 +6,7 @@ namespace Domain.Infrastructure
 {
     public interface IMailSender
     {
+        void Connect();
         void SendConfirmationEmail(string to, string token);
     }
 }

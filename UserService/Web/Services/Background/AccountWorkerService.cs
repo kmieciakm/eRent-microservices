@@ -1,4 +1,4 @@
-﻿using Domain.Ports.Infrastructure;
+﻿using Domain.Infrastructure;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,26 +12,26 @@ namespace Web.Services.Background
     public class AccountWorkerService : BackgroundService
     {
         private ILogger<AccountWorkerService> _Logger { get; }
-        private IAutomaticAccountCreator _AccountCreator { get; }
+        private IAccountsManger _AccountsManager { get; }
         private System.Timers.Timer _Timer { get; }
 
-        public AccountWorkerService(ILogger<AccountWorkerService> logger, IAutomaticAccountCreator accountCreator)
+        public AccountWorkerService(ILogger<AccountWorkerService> logger, IAccountsManger accountsManager)
         {
             _Logger = logger;
-            _AccountCreator = accountCreator;
+            _AccountsManager = accountsManager;
             _Timer = new System.Timers.Timer(15000);
             _Timer.Elapsed += (sender, e) =>
             {
-                _Logger.LogInformation($"[Rent Service] - Connecting to RabbitMQ ...");
-                _AccountCreator.Connect();
-                _Logger.LogInformation($"[Rent Service] - Connected.");
+                _Logger.LogInformation($"[User Service] - Connecting to RabbitMQ ...");
+                _AccountsManager.Connect();
+                _Logger.LogInformation($"[User Service] - Connected.");
             };
             _Timer.AutoReset = false;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _Logger.LogInformation($"[Rent Service] - Start Backgroud Service ...");
+            _Logger.LogInformation($"[User Service] - Start Backgroud Service ...");
             _Timer.Start();
             return Task.CompletedTask;
         }

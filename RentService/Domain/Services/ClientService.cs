@@ -38,6 +38,11 @@ namespace Domain.Services
                     email
                 );
 
+            if (_ClientQuery.GetClient(email) != null)
+            {
+                throw new ClientException("Creation of user account failed - given email is already used.");
+            }
+
             var result = _ClientCreate.Create(client);
             if (result == true)
             {

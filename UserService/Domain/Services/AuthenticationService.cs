@@ -13,15 +13,19 @@ namespace Domain.Services
     {
         private IUserRegistry _UserRepository { get; }
         private ITokenService _TokenService { get; }
+        private IAccountsManger _AccountsManager { get; }
         private IMailSender _MailSender { get; }
-        private IServicesManger _ServicesManger { get; }
+        private IAccountService _AccountService { get; }
 
-        public AuthenticationService(IUserRegistry userRepository, ITokenService tokenService, IMailSender mailSender, IServicesManger servicesManger)
+        public AuthenticationService(
+            IUserRegistry userRepository, IMailSender mailSender, ITokenService tokenService,
+            IAccountsManger accountsManager, IAccountService accountService)
         {
             _UserRepository = userRepository;
-            _TokenService = tokenService;
             _MailSender = mailSender;
-            _ServicesManger = servicesManger;
+            _TokenService = tokenService;
+            _AccountsManager = accountsManager;
+            _AccountService = accountService;
         }
 
         public Task<User> GetIdentity(string email)
@@ -95,11 +99,7 @@ namespace Domain.Services
             if (createdSuccessfully)
             {
                 var createdUser = await _UserRepository.GetAsync(signUp.Email);
-                _ServicesManger.CreateAccount(createdUser);
-
-                var accountConfirmationToken = await _UserRepository.GenerateAccountConfirmationTokenAsync(createdUser);
-                _MailSender.SendConfirmationEmail(createdUser.Email, accountConfirmationToken);
-
+                _AccountsManager.CreateAccount(createdUser);
                 return createdUser;
             }
             else
